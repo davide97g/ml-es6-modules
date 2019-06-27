@@ -1,6 +1,6 @@
 {
   "name": "ml-es6-modules",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Support Vector Machine in javascript with webpack",
   "main": "./src/js/index.js",
   "scripts": {
