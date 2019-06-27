@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+    <title>JSDoc: Global</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -50,103 +50,175 @@
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
                         <p>Title</p>
-                        <h1>Home</h1>
+                        <h1>Global</h1>
                     </header>
                     
                     
 
 
 
+
+<section>
+
+<header>
+    
+        <h2></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
     
 
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
+    
 
     
 
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <div class='vertical-section'>
+            <h3 class="title"><span>Members</span></h3>
+            <div class="members">
+            
+                <div class="member">
+
+<h4 class="name" id="Distances">
+    
+        
+            <span class='tag'>constant</span>
+        
+    
+    <span class="code-name">
+        Distances
+    </span>
+</h4>
 
 
 
-    <section>
-        <article><h1>machine-learning-es6-webpack</h1>
-<p>Some test with machine learning algorithms, es6 modules and webpack.</p>
-<h2>es6 modules</h2>
-<p>ECMAScript standard for importing and exporting features between javascript files.</p>
-<p>Example:</p>
-<pre class="prettyprint source lang-javascript"><code>//index.js
 
-import {MyFunction} from './module1.js'; //named import
-import {add, sub} from './module2.js'; //multiple named import
-import defaultF from './module1.js'; //default import
-
-let f = new MyFunction();
-export const newFunction = function(){
-    console.info(&quot;I'm a brand new function ready to be exported&quot;);
-}
-export default DefaultFunction(){
-    console.info(&quot;I'm default&quot;);
-}
-</code></pre>
-<h2>algorithms</h2>
-<ul>
-<li>svm
-<ul>
-<li>linear</li>
-<li>polynomial</li>
-<li>radial-basis-function (gaussian)</li>
-</ul>
-</li>
-<li>knn</li>
-<li>rbf</li>
-<li>random forest</li>
-<li>logistic regression</li>
-<li>neural net
-<ul>
-<li>multiple layers with costum definition</li>
-</ul>
-</li>
-</ul>
-<p>Every algorithm is an es6 module. All the files needed for the algorithm to work are present in his directory.</p>
-<p>Every algorithm share the basic structure.</p>
-<p>Example</p>
-<pre class="prettyprint source lang-javascript"><code>export const algorithm = function() {}; // expose this function
-algorithm.prototype = {
-  // define the function
-  train: function(data, labels, options) {
-    //set up the environment
-    //train
-    //stored results
-  },
-  predict: function(point) {
-    //returns the value predicted
-  },
-  predictClass: function(point) {
-    //returns the class predicted
-  }
-};
-
-// helper functions if needed
-</code></pre>
-<h1>webpack</h1>
-<p>A bundler for javascript code: you can use nodejs modules in the brower. All js files will be merged and transpiled into one bundle (index.bundle.js), generated into the <code>./dist</code> folder.</p>
-<p>To build the source code just run in the command line:</p>
-<pre class="prettyprint source"><code>npm run build
-</code></pre>
-<p>To be able to watch the files and automatically build, just run the command:</p>
-<pre class="prettyprint source"><code>npm run watch
-</code></pre></article>
-    </section>
+<div class="description">
+    <p>Class used to handle distances functions</p>
+</div>
 
 
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+
+    
+
+    
+        <p class="tag-source">
+            <a href="knn_distances.js.html" class="button">View Source</a>
+            <span>
+                <a href="knn_distances.js.html">knn/distances.js</a>, <a href="knn_distances.js.html#line20">line 20</a>
+            </span>
+        </p>
+    
+</dl>
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>//new instancelet distances = new Distances();//define two pointslet point1 = {x:1,y:3};let point2 = {x:4,y:-2};//minkowski distance from two pointslet minkowski_distance = distances.minkowski(point1,point2);//chebyshev distance from two pointslet chebyshev_distance = distances.chebyshev(point1,point2);//mahalanobis distance from two pointslet mahalanobis_distance = distances.mahalanobis(point1,point2);//setting the grade for minkowskidistances.setMinkowskiDegree(2);</code></pre>
+
+
+</div>
+            
+            </div>
+        </div>
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

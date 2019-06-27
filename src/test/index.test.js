@@ -1,2 +1,3 @@
-const index = require('../js/index');
-test("test",()=>expect(1).toBe(1));
+test("should ", () => {
+  expect(1 + 1).toEqual(2);
+});
