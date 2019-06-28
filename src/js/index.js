@@ -77,7 +77,7 @@ let svm_poly_options = {
   karpathy: true,
   timer: null
 };
-svm_poly.train(data, labels, svm_poly_options);
+svm_poly.train(multi, labels, svm_poly_options);
 
 let svm_rbf = new SVM();
 let svm_rbf_options = {
@@ -92,7 +92,7 @@ let svm_rbf_options = {
   karpathy: true,
   timer: null
 };
-svm_rbf.train(data, labels, svm_rbf_options);
+svm_rbf.train(multi, labels, svm_rbf_options);
 
 let knn = new KNN();
 let knn_options = {
@@ -107,7 +107,7 @@ let rbf_options = {
   epsilon: 0.1,
   rbfSigma: 0.5
 };
-rbf.train(data, labels, rbf_options);
+rbf.train(multi, labels, rbf_options);
 
 let randf = new RANDF();
 let randf_options = {
@@ -117,11 +117,11 @@ randf.train(data, labels, randf_options);
 
 let logreg = new LOGREG();
 let logreg_options = {};
-logreg.train(data, labels, logreg_options);
+logreg.train(multi, labels, logreg_options);
 
 let nn = new NeuralNet();
 let nn_options = {};
-nn.train(data, labels, nn_options);
+nn.train(multi, labels, nn_options);
 
 // update canvas on mouseclick
 let mouseClick = ({ x, y, shiftPressed }) => {
