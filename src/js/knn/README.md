@@ -13,12 +13,12 @@ Choose between various distances types:
 #### ES6 syntax
 
 ``` javascript
-import {KNN} from './knn';
+import {KNN} from './path/knn';
 ```
 #### npm module
 
 ``` javascript
-const KNN require('./knn');
+const KNN require('./path/knn');
 ```
 
 ### Variables
@@ -53,7 +53,7 @@ knn.train(data,labels,options);
 #### Prediction
 ``` javascript
 let point = [2,4];
-knn.predict(point); // -1 <= value <= 1
+knn.predict(point); // 0 <= value <= 1
 knn.predictClass(point); // value = 1 || value = -1
 ```
 ### Options

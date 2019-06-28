@@ -19,7 +19,7 @@ SVM.prototype = {
             let alphatol = options.alphatol || 0; // non-support vectors for space and time efficiency are truncated. To guarantee correct result set this to 0 to do no truncating. If you want to increase efficiency, experiment with setting this little higher, up to maybe 1e-4 or so.
             let maxiter = options.maxiter || 10000; // max number of iterations
             let numpasses = options.numpasses || 10; // how many passes over data with no change before we halt? Increase for more precision.
-            let SSCA = options.SSCA || false;
+            let SSCA = options.SSCA || false; // smoothed separable case approximation algorithm
             let UB = options.UB || 0.5;
 
             this.C = C;

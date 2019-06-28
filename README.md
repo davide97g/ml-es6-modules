@@ -2,7 +2,6 @@
 ![GitHub](https://img.shields.io/github/license/davide97g/ml-es6-modules.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davide97g/ml-es6-modules.svg)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
-![Codetally](https://img.shields.io/codetally/davide97g/ml-es6-modules.svg)
 
 # machine-learning-es6-webpack
 
@@ -29,6 +28,10 @@ export default DefaultFunction(){
     console.info("I'm default");
 }
 ```
+
+> Script loading into html file could be done in different ways depending on your needs:
+> - `async defer` attributes inside script tag : no need to wrap code with jquery document-ready statement
+> - `type="module"` if you want to load the script server-side (for es6 modules loading) 
 
 ## algorithms
 

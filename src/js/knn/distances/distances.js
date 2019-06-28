@@ -1,4 +1,4 @@
-import { zeros } from "../svm/utils";
+import { zeros } from "../../svm/utils";
 
 /**
  *

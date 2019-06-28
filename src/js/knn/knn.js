@@ -1,4 +1,4 @@
-import { Distances } from "./distances.js";
+import { Distances } from "./distances/distances.js";
 export const KNN = function() {};
 KNN.prototype = {
   train: function(data, labels, options) {
