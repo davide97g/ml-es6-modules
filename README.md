@@ -84,3 +84,8 @@ To be able to watch the files and automatically build, just run the command:
 ```
 npm run watch
 ```
+
+## Support on Beerpay
+Hey dude! Help me out for a couple of :beers:!
+
+[![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/badge.svg?style=beer-square)](https://beerpay.io/davide97g/ml-es6-modules)  [![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/make-wish.svg?style=flat-square)](https://beerpay.io/davide97g/ml-es6-modules?focus=wish)
