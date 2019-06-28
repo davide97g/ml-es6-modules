@@ -18,7 +18,7 @@ RBF.prototype = {
 		for (let i = 0; i < this.data.length; i++) {
 			let s = 0;
 			for (let j = 0; j < point.length; j++) s += Math.pow(point[j] - this.data[i][j], 2);
-			value += this.labels[i] * Math.exp(-s / (2.0 * Math.pow(this.rbfSigma, 2))); //extend with 1/(x+1) formula too
+			value += this.labels[i] * Math.exp(-s / (2.0 * Math.pow(this.rbfSigma, 2)));
 		}
 		return value;
 	}

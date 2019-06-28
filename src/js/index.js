@@ -97,10 +97,10 @@ svm_rbf.train(data, labels, svm_rbf_options);
 let knn = new KNN();
 let knn_options = {
   k: 3,
-  distance: "minkowski",
+  distance: "mahalanobis",
   p: 1.5
 };
-knn.train(data, labels, knn_options);
+knn.train(multi, labels, knn_options);
 
 let rbf = new RBF();
 let rbf_options = {

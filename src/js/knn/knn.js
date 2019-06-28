@@ -32,10 +32,7 @@ KNN.prototype = {
     let nearest = new Array(k);
     for (let i = 0; i < k; i++) {
       nearest[i] = {};
-      nearest[i].distance = this.distances.of(
-        { x: point[0], y: point[1] },
-        { x: this.data[i][0], y: this.data[i][1] }
-      );
+      nearest[i].distance = this.distances.of(point, this.data[i]);
       nearest[i].label = this.labels[i];
     }
 
@@ -46,10 +43,7 @@ KNN.prototype = {
     let d = 0;
 
     for (let i = k; i < this.data.length; i++) {
-      d = this.distances.of(
-        { x: point[0], y: point[1] },
-        { x: this.data[i][0], y: this.data[i][1] }
-      );
+      d = this.distances.of(point, this.data[i]);
       if (nearest[0].distance > d) {
         //se è più distante il più distante dei nearest, aggiorno la lista
         nearest[0].distance = d;
