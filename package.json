@@ -4,7 +4,7 @@
   "description": "Support Vector Machine in javascript with webpack",
   "main": "./src/js/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack",
     "watch": "webpack --watch",
     "coveralls": "jest --coverage",
