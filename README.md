@@ -2,6 +2,7 @@
 ![GitHub](https://img.shields.io/github/license/davide97g/ml-es6-modules.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davide97g/ml-es6-modules.svg)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
+![Codetally](https://img.shields.io/codetally/davide97g/ml-es6-modules.svg)
 
 # machine-learning-es6-webpack
 
