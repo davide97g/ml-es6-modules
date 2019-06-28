@@ -6,20 +6,47 @@ import { RandomForest as RANDF } from "./randf/randf";
 import { drawer, master_drawer } from "./drawer";
 import { NeuralNet } from "./nn/nn";
 
-let drawers = [];
+let radioXY = document.getElementById("xy");
+radioXY.addEventListener("click", () => {
+  data = selectPredictors(multi, 0, 1);
+  drawers.forEach(drawer => drawer.draw(data, labels));
+});
 
-let data = [
-  [1, 0],
-  [2, 3],
-  [5, 4],
-  [2, 7],
-  [0, 3],
-  [-1, 0],
-  [-3, -4],
-  [-2, -2],
-  [-1, -1],
-  [-5, -2]
+let radioYZ = document.getElementById("yz");
+radioYZ.addEventListener("click", () => {
+  data = selectPredictors(multi, 1, 2);
+  drawers.forEach(drawer => drawer.draw(data, labels));
+});
+
+let radioXZ = document.getElementById("xz");
+radioXZ.addEventListener("click", () => {
+  data = selectPredictors(multi, 0, 2);
+  drawers.forEach(drawer => drawer.draw(data, labels));
+});
+
+let MARGIN = document.getElementById("margin");
+MARGIN.addEventListener("click", () => {
+  let margin;
+  if (MARGIN.checked) margin = "soft";
+  else margin = "hard";
+  drawers.forEach(drawer => drawer.setOptions({ margin: margin }));
+  drawers.forEach(drawer => drawer.draw(data, labels));
+});
+
+let multi = [
+  [1, 0, 2],
+  [2, 3, 4],
+  [5, 4, 6],
+  [2, 7, 5],
+  [0, 3, 7],
+  [-1, 0, -2],
+  [-3, -4, -4],
+  [-2, -2, -1],
+  [-1, -1, -3],
+  [-5, -2, -5]
 ];
+
+let data = selectPredictors(multi, 0, 1);
 let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
 
 let svm_linear = new SVM();
@@ -119,6 +146,7 @@ let mouseClick = ({ x, y, shiftPressed }) => {
   console.info(t1 - t0 + " ms");
 };
 
+let drawers = [];
 //master canvas with mouse click event listener
 let master_canvas = document.getElementById("draw-canvas-test");
 let master = new master_drawer(master_canvas, mouseClick, {});
@@ -161,6 +189,8 @@ drawers.push(
 //draw all
 drawers.forEach(drawer => drawer.draw(data, labels));
 
+//_______________
+
 function training(data, labels) {
   svm_linear.train(data, labels, svm_linear_options);
   svm_poly.train(data, labels, svm_poly_options);
@@ -172,21 +202,8 @@ function training(data, labels) {
   nn.train(data, labels, nn_options);
 }
 
-function selectPredictors(data,chosen1,chosen2) {
+function selectPredictors(data, chosen1, chosen2) {
   let predictors = [];
   data.forEach(point => predictors.push([point[chosen1], point[chosen2]]));
-  console.table(predictors);
+  return predictors;
 }
-
-let multi = [
-  [1, 2, 3],
-  [2, 3, 4],
-  [3, 4, 5],
-  [4, 5, 6],
-  [5, 6, 7],
-  [6, 7, 8],
-  [7, 8, 9],
-  [8, 9, 10]
-];
-
-selectPredictors(multi,0,1);
