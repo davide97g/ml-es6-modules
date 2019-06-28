@@ -1,41 +1,14 @@
 {
-    "currency":"eur",
-    "charges": [
-      {
-        "event":"commit",
-        "action":"added",
-        "chargetype":"author",
-        "chargeref":"someone@github.org",
-        "description":"Author specific charge for someone when he or she adds something in a commit.",
-        "calculationtype":"normal",
-        "chargeamount":"45.23"
-      },
-      {
-        "event":"commit",
-        "action":"modified",
-        "chargetype":"author",
-        "chargeref":"someone@github.org",
-        "description":"Author specific charge for someone when he or she modifies something in a commit.",
-        "calculationtype":"normal",
-        "chargeamount":"8.26"
-      },
-      {
-        "event":"commit",
-        "action":"removed",
-        "chargetype":"author",
-        "chargeref":"someone@github.org",
-        "description":"Author specific charge for someone when he or she removes something in a commit.",
-        "calculationtype":"normal",
-        "chargeamount":"17.96"
-      },
-      {
-        "event":"commit",
-        "action":"any",
-        "chargetype":"tax",
-        "chargeref":"null",
-        "description":"Government Sales Tax.",
-        "calculationtype":"percent",
-        "chargeamount":"6.25"
-      }
-    ]
-  }
+  "currency": "cad",
+  "charges": [
+    {
+      "event": "commit",
+      "action": "added",
+      "chargetype": "author",
+      "chargeref": "someone@github.org",
+      "description": "Author specific charge for Greg when he adds something in a commit.",
+      "calculationtype": "normal",
+      "chargeamount": "45.23"
+    }
+  ]
+}
