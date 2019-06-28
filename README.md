@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.com/davide97g/ml-es6-modules.svg?branch=master)](https://travis-ci.com/davide97g/ml-es6-modules)
 ![GitHub](https://img.shields.io/github/license/davide97g/ml-es6-modules.svg)
-![Coveralls github](https://img.shields.io/coveralls/github/davide97g/ml-es6-modules.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davide97g/ml-es6-modules.svg)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
 
