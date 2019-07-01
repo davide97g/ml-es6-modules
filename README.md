@@ -3,7 +3,8 @@
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/davide97g/ml-es6-modules.svg)
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
 
-# machine-learning-es6-webpack
+# ml-es6-modules
+# Machine learning as ES6 modules
 
 Some test with machine learning algorithms, es6 modules and webpack.
 
