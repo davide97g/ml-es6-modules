@@ -7,6 +7,9 @@
 
 Some test with machine learning algorithms, es6 modules and webpack.
 
+## demo
+A live demo is available [here](https://davide97g.github.io/ml-es6-modules/).
+
 ## es6 modules
 
 ECMAScript standard for importing and exporting features between javascript files.
