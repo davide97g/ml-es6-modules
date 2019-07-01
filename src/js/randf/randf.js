@@ -50,7 +50,7 @@ RandomForest.prototype = {
 };
 
 // represents a single decision tree
-let DecisionTree = function() {};
+export const DecisionTree = function() {};
 
 DecisionTree.prototype = {
   train: function(data, labels, options) {

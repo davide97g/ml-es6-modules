@@ -1,12 +1,3 @@
-export const LOGREG = function() {};
-LOGREG.prototype = {
-  train: function(data, labels, options) {
-    console.info("trained");
-  },
-  predict: function(point) {},
-  predictClass: function(point) {}
-};
-
 export const LinearRegression = function(config) {
   config = config || {};
 
@@ -149,21 +140,7 @@ LinearRegression.prototype.transform = function(x) {
 
 //_________________Logistic Regression__________________
 
-export const LogisticRegression = function(import_config) {
-  let config = import_config || {};
-  if (!config.alpha) {
-    config.alpha = 0.001;
-  }
-  if (!config.iterations) {
-    config.iterations = 100;
-  }
-  if (!config.lambda) {
-    config.lambda = 0;
-  }
-  this.alpha = config.alpha;
-  this.lambda = config.lambda;
-  this.iterations = config.iterations;
-};
+export const LogisticRegression = function() {};
 
 LogisticRegression.prototype.train = function(data, labels, options) {
   let config = options || {};

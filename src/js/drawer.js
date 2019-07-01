@@ -23,9 +23,7 @@ drawer.prototype = {
     //draw axes
     this.drawAxes();
     //draw data points
-    this.drawPoints(points, labels);
-    //draw test points
-    //@TODO draw test function
+    this.drawPoints(points, labels);    
   },
   drawGrid: function() {
     //draw screen
@@ -64,6 +62,18 @@ drawer.prototype = {
   },
   drawPoints: function(points, labels) {
     let radius = 6;
+    for (let i = 0; i < points.length; i++) {
+      let prediction = this.algorithm.predictClass(points[i]);
+      this.ctx.fillStyle = getPointColor(prediction, labels[i]);
+      this.drawCircle(
+        points[i][0] * this.ss + this.WIDTH / 2,
+        points[i][1] * this.ss + this.HEIGHT / 2,
+        radius
+      );
+    }
+  },
+  drawTestPoints: function(points, labels) {
+    let radius = 4;
     for (let i = 0; i < points.length; i++) {
       let prediction = this.algorithm.predictClass(points[i]);
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
