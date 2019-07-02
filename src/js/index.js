@@ -5,6 +5,9 @@ import { RBF } from "./rbf/rbf";
 import { RandomForest as RANDF } from "./randf/randf";
 import { drawer, master_drawer } from "./drawer";
 import { NeuralNet } from "./nn/nn";
+import { Manager } from "./manager";
+
+let manager = new Manager();
 
 let radioXY = document.getElementById("xy");
 radioXY.addEventListener("click", () => {
@@ -125,7 +128,6 @@ nn.train(multi, labels, nn_options);
 
 // update canvas on mouseclick
 let mouseClick = ({ x, y, shiftPressed }) => {
-  let t0 = performance.now();
   // store point
   data.push([
     (x - master.WIDTH / 2) / master.ss,
@@ -140,10 +142,7 @@ let mouseClick = ({ x, y, shiftPressed }) => {
   training(data, labels);
 
   // draw all
-  drawers.forEach(drawer => drawer.draw(data, labels));
-
-  let t1 = performance.now();
-  console.info(t1 - t0 + " ms");
+  manager.notifyAll(data, labels);
 };
 
 let drawers = [];
@@ -154,40 +153,56 @@ master.draw(data, labels);
 
 //create the other drawers
 drawers.push(
-  new drawer(svm_linear, document.getElementById("svm-linear-canvas"), {
+  new drawer(
+    svm_linear,
+    document.getElementById("svm-linear-canvas"),
+    mouseClick,
+    {
+      margin: "soft"
+    }
+  )
+);
+drawers.push(
+  new drawer(svm_poly, document.getElementById("svm-poly-canvas"), mouseClick, {
     margin: "soft"
   })
 );
 drawers.push(
-  new drawer(svm_poly, document.getElementById("svm-poly-canvas"), {
+  new drawer(svm_rbf, document.getElementById("svm-rbf-canvas"), mouseClick, {
     margin: "soft"
   })
 );
 drawers.push(
-  new drawer(svm_rbf, document.getElementById("svm-rbf-canvas"), {
+  new drawer(knn, document.getElementById("knn-canvas"), mouseClick, {
     margin: "soft"
   })
 );
 drawers.push(
-  new drawer(knn, document.getElementById("knn-canvas"), { margin: "soft" })
-);
-drawers.push(
-  new drawer(rbf, document.getElementById("rbf-canvas"), { margin: "soft" })
-);
-drawers.push(
-  new drawer(randf, document.getElementById("randf-canvas"), { margin: "soft" })
-);
-drawers.push(
-  new drawer(logreg, document.getElementById("logreg-canvas"), {
+  new drawer(rbf, document.getElementById("rbf-canvas"), mouseClick, {
     margin: "soft"
   })
 );
 drawers.push(
-  new drawer(nn, document.getElementById("nn-canvas"), { margin: "soft" })
+  new drawer(randf, document.getElementById("randf-canvas"), mouseClick, {
+    margin: "soft"
+  })
+);
+drawers.push(
+  new drawer(logreg, document.getElementById("logreg-canvas"), mouseClick, {
+    margin: "soft"
+  })
+);
+drawers.push(
+  new drawer(nn, document.getElementById("nn-canvas"), mouseClick, {
+    margin: "soft"
+  })
 );
 
+drawers.forEach(drawer => manager.subscribe(drawer));
+manager.notifyAll(data, labels);
+
 //draw all
-drawers.forEach(drawer => drawer.draw(data, labels));
+// drawers.forEach(drawer => drawer.draw(data, labels));
 
 //_______________
 

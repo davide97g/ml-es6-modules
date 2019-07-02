@@ -4,7 +4,16 @@ KNN.prototype = {
   train: function(data, labels, options) {
     this.data = data;
     this.labels = labels;
-    this.options = options;
+    this.options = options || {};
+    let k = this.options.k || 1;
+    if (k < 1) k = 1;
+    if (k > this.data.length) {
+      console.warn(
+        "need more data: KNN with K: " + k + " and #data: " + this.data.length
+      );
+      return 0;
+    }
+    this.k = k;
     this.distances = new Distances();
     this.distances.setDataSet(data);
     let distance = this.options.distance || "minkowski";
@@ -15,20 +24,14 @@ KNN.prototype = {
     }
   },
   predict: function(point) {
-    return (this.knn(point, this.options.k) + 1) / 2;
+    if (!this.k) console.warn("k not defined");
+    else return (this.knn(point, this.k) + 1) / 2;
   },
   predictClass: function(point) {
-    return this.knn(point, this.options.k) > 0 ? 1 : -1;
+    if (!this.k) console.warn("k not defined");
+    else return this.knn(point, this.k) > 0 ? 1 : -1;
   },
   knn: function(point, k) {
-    k = k || 1;
-    if (k < 1) k = 1;
-    if (k > this.data.length) {
-      console.warn(
-        "need more data: KNN with K: " + k + " and #data: " + this.data.length
-      );
-      return 0;
-    }
     let nearest = new Array(k);
     for (let i = 0; i < k; i++) {
       nearest[i] = {};

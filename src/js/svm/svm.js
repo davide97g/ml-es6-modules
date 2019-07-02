@@ -1,7 +1,7 @@
 import {linearKernel,makePolyKernel,makeRbfKernel,makeSigmoidKernel} from './kernels.js';
 import * as utils from './utils.js';
 
-export const SVM = function(options) {};
+export const SVM = function() {};
 
 SVM.prototype = {
 
@@ -94,7 +94,7 @@ SVM.prototype = {
             this.b = 0.0;
             this.usew_ = false; // internal efficiency flag
 
-            this.use_timer = options.timer !== null;
+            this.use_timer = options.timer;
 
             if(this.use_timer) {
                 this.ctx = options.timer.ctx || null;

@@ -3,7 +3,7 @@ RBF.prototype = {
 	train: function(data, labels, options) {
 		this.data = data;
 		this.labels = labels;
-		this.options = options;
+		options = options || {};
 		this.epsilon = options.epsilon || 0.1;
 		this.rbfSigma = options.rbfSigma || 0.5;
 	},

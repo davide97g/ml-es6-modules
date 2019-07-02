@@ -1,14 +1,21 @@
-export const drawer = function(algorithm, canvas, options) {
+export const drawer = function(algorithm, canvas, callback, options) {
   this.algorithm = algorithm;
   this.ctx = canvas.getContext("2d");
+  if (callback !== undefined)
+    canvas.addEventListener("click", e => callback(eventClick(canvas, e)));
   this.WIDTH = canvas.width;
   this.HEIGHT = canvas.height;
   this.options = options || { margin: "soft" };
+  this.options.WIDTH = this.WIDTH;
+  this.options.HEIGHT = canvas.height;
   this.ss = options.ss || 20;
   this.density = options.density || 3;
 };
 
 drawer.prototype = {
+  setManager: function(manager) {
+    this.manager = manager;
+  },
   setAlgorithm: function(algorithm) {
     this.algorithm = algorithm;
   },
@@ -23,7 +30,7 @@ drawer.prototype = {
     //draw axes
     this.drawAxes();
     //draw data points
-    this.drawPoints(points, labels);    
+    this.drawPoints(points, labels);
   },
   drawGrid: function() {
     //draw screen
@@ -154,12 +161,7 @@ function eventClick(canvas, e) {
   }
   x -= canvas.offsetLeft;
   y -= canvas.offsetTop;
-  return {
-    x: x,
-    y: y,
-    shiftPressed: e.shiftKey,
-    ctrlPressed: e.ctrlKey
-  };
+  return { x: x, y: y, shiftPressed: e.shiftKey, ctrlPressed: e.ctrlKey };
 }
 
 function getPointColor(predicted, real) {

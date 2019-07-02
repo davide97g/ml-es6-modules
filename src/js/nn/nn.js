@@ -2,6 +2,7 @@ import { Net, Vol, Trainer } from "./convnet";
 export const NeuralNet = function() {};
 NeuralNet.prototype = {
   train: function(data, labels, options) {
+    options = options || {};
     let layer_defs = options.layer_defs || [];
     if (layer_defs.length === 0) {
       layer_defs.push({ type: "input", out_sx: 1, out_sy: 1, out_depth: 2 });
