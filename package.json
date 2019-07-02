@@ -1,13 +1,11 @@
 {
   "name": "ml-es6-modules",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Support Vector Machine in javascript with webpack",
   "main": "./src/js/index.js",
   "scripts": {
-    "test": "jest",
     "build": "webpack",
     "watch": "webpack --watch",
-    "coveralls": "jest --coverage",
     "docs": "./node_modules/.bin/jsdoc -c jsdoc.json"
   },
   "author": "Davide Ghiotto",
@@ -16,7 +14,6 @@
   "devDependencies": {
     "better-docs": "^1.1.6",
     "clean-webpack-plugin": "^3.0.0",
-    "jest": "^24.8.0",
     "jsdoc": "^3.6.2",
     "webpack": "^4.35.0",
     "webpack-cli": "^3.3.5"
