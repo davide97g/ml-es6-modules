@@ -72,7 +72,7 @@ KNN.prototype = {
     let options = {
       group: "knn",
       k: {
-        id: "K",
+        id: "k",
         type: "range",
         min: 1,
         max: 20,
@@ -80,7 +80,7 @@ KNN.prototype = {
         value: 3
       },
       p: {
-        id: "P",
+        id: "p",
         type: "range",
         min: 1,
         max: 10,
@@ -88,28 +88,26 @@ KNN.prototype = {
         value: 2
       },
       distance: {
-        group: "distances",
-        values: [
-          {
-            id: "minkowski",
-            type: "radio",
-            name: "distances",
-            value: "minkowski",
-            checked: true
-          },
-          {
-            id: "chebyshev",
-            type: "radio",
-            name: "distances",
-            value: "chebyshev"
-          },
-          {
-            id: "mahalanobis",
-            type: "radio",
-            name: "distances",
-            value: "mahalanobis"
-          }
-        ]
+        group: "distance",
+        minkowski: {
+          id: "minkowski",
+          type: "radio",
+          name: "distances",
+          value: "minkowski",
+          checked: true
+        },
+        chebyshev: {
+          id: "chebyshev",
+          type: "radio",
+          name: "distances",
+          value: "chebyshev"
+        },
+        mahalanobis: {
+          id: "mahalanobis",
+          type: "radio",
+          name: "distances",
+          value: "mahalanobis"
+        }
       }
     };
     return options;

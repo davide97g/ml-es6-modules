@@ -207,6 +207,16 @@ ui.setUpAlgorithm(nn);
 ui.setUpAlgorithm(logreg);
 ui.setUpAlgorithm(randf);
 
+let config = ui.getConfig();
+console.info(config);
+
+let btn = document.createElement("button");
+btn.innerHTML = "getConfig()";
+btn.addEventListener("click", () => console.info(ui.getConfig()));
+document.body.appendChild(btn);
+
+// ui.getOptionsValue();
+
 drawers.forEach(drawer => manager.subscribe(drawer));
 manager.notifyAll(data, labels);
 

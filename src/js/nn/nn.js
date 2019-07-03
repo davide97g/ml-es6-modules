@@ -44,6 +44,7 @@ NeuralNet.prototype = {
     let options = {
       group: "neural net",
       training: {
+        group: "training",
         iters: {
           id: "iters",
           type: "range",
@@ -53,7 +54,7 @@ NeuralNet.prototype = {
           value: 1000
         },
         learning_rate: {
-          id: "learning rate",
+          id: "learning_rate",
           type: "range",
           min: 0,
           max: 0.1,
@@ -69,7 +70,7 @@ NeuralNet.prototype = {
           value: 0.1
         },
         batch_size: {
-          id: "batch size",
+          id: "batch_size",
           type: "range",
           min: 5,
           max: 20,
@@ -77,7 +78,7 @@ NeuralNet.prototype = {
           value: 10
         },
         l2_decay: {
-          id: "l2 decay",
+          id: "l2_decay",
           type: "range",
           min: 0,
           max: 0.05,
