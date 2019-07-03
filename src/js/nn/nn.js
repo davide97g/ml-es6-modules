@@ -5,7 +5,7 @@ NeuralNet.prototype = {
     options = options || {};
     let layer_defs = options.layer_defs || [];
     if (layer_defs.length === 0) {
-      layer_defs.push({ type: "input", out_sx: 1, out_sy: 1, out_depth:2});
+      layer_defs.push({ type: "input", out_sx: 1, out_sy: 1, out_depth: 2 });
       layer_defs.push({ type: "fc", num_neurons: 4, activation: "tanh" });
       layer_defs.push({ type: "fc", num_neurons: 4, activation: "tanh" });
       layer_defs.push({ type: "fc", num_neurons: 4, activation: "tanh" });
@@ -23,7 +23,6 @@ NeuralNet.prototype = {
       l2_decay: training_options.l2_decay || 0.001
     });
 
-
     let maxiter = training_options.iters || 1000;
     let zeroOneLabels = labels.map(label => (label === 1 ? 1 : 0));
     for (let iters = 0; iters < maxiter; iters++) {
@@ -40,5 +39,53 @@ NeuralNet.prototype = {
   predictClass: function(point) {
     let a = this.net.forward(new Vol(point), false);
     return a.w[0] > a.w[1] ? -1 : 1;
+  },
+  getOptions: function() {
+    let options = {
+      group: "neural net",
+      training: {
+        iters: {
+          id: "iters",
+          type: "range",
+          min: 0,
+          max: 10000,
+          step: 10,
+          value: 1000
+        },
+        learning_rate: {
+          id: "learning rate",
+          type: "range",
+          min: 0,
+          max: 0.1,
+          step: 0.01,
+          value: 0.01
+        },
+        momentum: {
+          id: "momentum",
+          type: "range",
+          min: 0,
+          max: 0.2,
+          step: 0.01,
+          value: 0.1
+        },
+        batch_size: {
+          id: "batch size",
+          type: "range",
+          min: 5,
+          max: 20,
+          step: 1,
+          value: 10
+        },
+        l2_decay: {
+          id: "l2 decay",
+          type: "range",
+          min: 0,
+          max: 0.05,
+          step: 0.01,
+          value: 0.01
+        }
+      }
+    };
+    return options;
   }
 };

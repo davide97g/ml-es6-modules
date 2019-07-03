@@ -6,6 +6,7 @@ import { RandomForest as RANDF } from "./randf/randf";
 import { drawer, master_drawer } from "./drawer";
 import { NeuralNet } from "./nn/nn";
 import { Manager } from "./manager";
+import { UI } from "./ui";
 
 let manager = new Manager();
 
@@ -197,6 +198,14 @@ drawers.push(
     margin: "soft"
   })
 );
+
+let ui = new UI(document);
+ui.setUpAlgorithm(knn);
+ui.setUpAlgorithm(svm_rbf);
+ui.setUpAlgorithm(rbf);
+ui.setUpAlgorithm(nn);
+ui.setUpAlgorithm(logreg);
+ui.setUpAlgorithm(randf);
 
 drawers.forEach(drawer => manager.subscribe(drawer));
 manager.notifyAll(data, labels);

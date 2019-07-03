@@ -67,5 +67,51 @@ KNN.prototype = {
     if (c > 0) return class2 / k;
     //greenish
     else return -class1 / k; //reddish
+  },
+  getOptions: function() {
+    let options = {
+      group: "knn",
+      k: {
+        id: "K",
+        type: "range",
+        min: 1,
+        max: 20,
+        step: 1,
+        value: 3
+      },
+      p: {
+        id: "P",
+        type: "range",
+        min: 1,
+        max: 10,
+        step: 1,
+        value: 2
+      },
+      distance: {
+        group: "distances",
+        values: [
+          {
+            id: "minkowski",
+            type: "radio",
+            name: "distances",
+            value: "minkowski",
+            checked: true
+          },
+          {
+            id: "chebyshev",
+            type: "radio",
+            name: "distances",
+            value: "chebyshev"
+          },
+          {
+            id: "mahalanobis",
+            type: "radio",
+            name: "distances",
+            value: "mahalanobis"
+          }
+        ]
+      }
+    };
+    return options;
   }
 };

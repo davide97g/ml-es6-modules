@@ -5,6 +5,42 @@ export const SVM = function() {};
 
 SVM.prototype = {
 
+    getOptions: function(){
+        let options = {
+            group:"svm",
+            C: {
+                id:"C",
+                type: "range",
+                min: 0,
+                max: 2,
+                step: 0.1,
+                value: this.C
+            }
+        };
+        if(this.kernelType === "linear"){}
+        else if(this.kernelType === "poly"){
+            options.degree = {
+                id:"degree",
+                type: "range",
+                min: 2,
+                max: 5,
+                step: 1,
+                value: this.degree
+            };
+        }
+        else if(this.kernelType === "rbf"){
+            options.rbfSigma = {
+                id:"rbfSigma",
+                type: "range",
+                min: 0,
+                max: 1,
+                step: 0.1,
+                value: this.rbfSigma
+            };
+        }
+        return options;
+    },
+
         train: function(data, labels, options) {
             let t0 = performance.now();
             this.t0 = t0;

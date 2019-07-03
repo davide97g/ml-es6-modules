@@ -3,3 +3,24 @@
   float: left;
   padding: 2px;
 }
+
+p {
+  margin: 0;
+  padding: 0;
+  width: auto;
+}
+
+/** UI classes */
+
+.options_container {
+  display: inline-block;
+  width: 400px;
+  text-align: center;
+}
+.container {
+  display: inline-block;
+  background: rgba(250, 150, 150, 0.5);
+  text-align: center;
+}
+
+/** UI classes end */

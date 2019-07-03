@@ -46,6 +46,37 @@ RandomForest.prototype = {
 
   predictClass: function(point) {
     return this.predict(point) > 0.5 ? 1 : -1;
+  },
+
+  getOptions: function() {
+    let options = {
+      group: "random forest",
+      numTrees: {
+        id: "numTrees",
+        type: "range",
+        min: 1,
+        max: 100,
+        step: 1,
+        value: 100
+      },
+      maxDepth: {
+        id: "maxDepth",
+        type: "range",
+        min: 1,
+        max: 10,
+        step: 1,
+        value: 4
+      },
+      numTries: {
+        id: "numTries",
+        type: "range",
+        min: 1,
+        max: 100,
+        step: 1,
+        value: 10
+      }
+    };
+    return options;
   }
 };
 

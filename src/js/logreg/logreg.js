@@ -142,6 +142,37 @@ LinearRegression.prototype.transform = function(x) {
 
 export const LogisticRegression = function() {};
 
+LogisticRegression.prototype.getOptions = function() {
+  let options = {
+    group: "logistic regression",
+    alpha: {
+      id: "alpha",
+      type: "range",
+      min: 0,
+      max: 0.01,
+      step: 0.001,
+      value: this.alpha
+    },
+    iteration: {
+      id: "iterations",
+      type: "range",
+      min: 10,
+      max: 1000,
+      step: 10,
+      value: this.iterations
+    },
+    lamda: {
+      id: "lamda",
+      type: "range",
+      min: 0,
+      max: 1,
+      step: 0.1,
+      value: this.lambda
+    }
+  };
+  return options;
+};
+
 LogisticRegression.prototype.train = function(data, labels, options) {
   let config = options || {};
   if (!config.alpha) {
