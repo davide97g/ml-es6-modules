@@ -20,8 +20,6 @@
     <label for="margin">soft margin</label>
     <input id="margin" checked type="checkbox" /> -->
 
-    <button id="execute">Execute</button>
-
     <div class="box">
       <p>Draw</p>
       <canvas id="draw-canvas-test" width="400px" height="400px"></canvas>
@@ -32,7 +30,10 @@
         <p>SVM linear</p>
         <canvas id="svm-linear-canvas" width="400px" height="400px"></canvas>
       </div>
-      <div class="options" id="svm-linear-options"></div>
+      <div class="options" id="svm-linear-options">
+        <div id="svm-linear-options-draw"></div>
+      </div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -40,6 +41,7 @@
         <canvas id="svm-poly-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="svm-poly-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -47,6 +49,7 @@
         <canvas id="svm-rbf-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="svm-rbf-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -54,6 +57,7 @@
         <canvas id="knn-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="knn-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -61,6 +65,7 @@
         <canvas id="rbf-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="rbf-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -68,6 +73,7 @@
         <canvas id="randf-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="randf-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -75,6 +81,7 @@
         <canvas id="logreg-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="logreg-options"></div>
+      <button class="execute">Execute</button>
     </div>
     <div class="box">
       <div class="drawer">
@@ -82,6 +89,7 @@
         <canvas id="nn-canvas" width="400px" height="400px"></canvas>
       </div>
       <div class="options" id="nn-options"></div>
+      <button class="execute">Execute</button>
     </div>
   </body>
 </html>

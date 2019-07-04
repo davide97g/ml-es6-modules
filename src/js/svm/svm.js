@@ -1,13 +1,14 @@
 import {linearKernel,makePolyKernel,makeRbfKernel,makeSigmoidKernel} from './kernels.js';
 import * as utils from './utils.js';
-
-export const SVM = function() {};
-
+let svm_id=0;
+export const SVM = function() {
+    this.svm_id = svm_id;
+    svm_id++;
+};
 SVM.prototype = {
 
     setOptions: function(options) {
         this.options = options;
-        this.train(this.data, this.labels, this.options);
       },
 
     getOptions: function(){
@@ -25,10 +26,40 @@ SVM.prototype = {
                 id:"karpathy",
                 type:"checkbox",
                 checked: true
+            },
+            kernel:{
+                group:"kernel",
+                linear:{
+                    id:"linear",
+                    type:"radio",
+                    value:"linear",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "linear",
+                    disabled: true
+                },
+                poly: {
+                    id:"poly",
+                    type:"radio",
+                    value:"poly",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "poly",
+                    disabled: true
+                },
+                rbf:{
+                    id:"rbf",
+                    type:"radio",
+                    value:"rbf",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "rbf",
+                    disabled: true
+                }
             }
         };
-        if(this.kernelType === "linear"){}
+        if(this.kernelType === "linear"){
+            options.group = "svm linear";
+        }
         else if(this.kernelType === "poly"){
+            options.group = "svm poly";
             options.degree = {
                 id:"degree",
                 type: "range",
@@ -39,6 +70,7 @@ SVM.prototype = {
             };
         }
         else if(this.kernelType === "rbf"){
+            options.group = "svm rbf";
             options.rbfSigma = {
                 id:"rbfSigma",
                 type: "range",
@@ -51,7 +83,7 @@ SVM.prototype = {
         return options;
     },
 
-        train: function(data, labels, options) {
+        train: function(data, labels) {
             let t0 = performance.now();
             this.t0 = t0;
 
@@ -59,8 +91,9 @@ SVM.prototype = {
             this.labels = labels;
 
             // parameters
-            options = options || {};
-            this.options = options;
+            // options = options || {};
+            this.options = this.options || {};
+            let options = this.options;
             let C = options.C || 1.0; // C value. Decrease for more regularization
             let tol = options.tol || 1e-4; // numerical tolerance. Don't touch unless you're pro
             let alphatol = options.alphatol || 0; // non-support vectors for space and time efficiency are truncated. To guarantee correct result set this to 0 to do no truncating. If you want to increase efficiency, experiment with setting this little higher, up to maybe 1e-4 or so.
@@ -79,10 +112,14 @@ SVM.prototype = {
             // instantiate kernel according to options. kernel can be given as string or as a custom function
             let kernel = linearKernel;
             this.kernelType = "linear";
+            let kernelType = "linear";
+            for (let d in this.options.kernel) {
+                if (this.options.kernel[d]) kernelType = d;
+              }
             if("kernel" in options) {
-                if(typeof options.kernel === "string") {
+                if(typeof kernelType === "string") {
                     // kernel was specified as a string. Handle these special cases appropriately
-                    if(options.kernel === "linear") {
+                    if(kernelType === "linear") {
                         this.kernelType = "linear";
                         kernel = linearKernel;let input_functions = options.input_functions || null;
                         this.input_transformation = false;
@@ -100,13 +137,13 @@ SVM.prototype = {
                             this.data = app;
                         }
                     }
-                    if(options.kernel === "rbf") {
+                    if(kernelType === "rbf") {
                         let rbfSigma = options.rbfsigma || 0.5;
                         this.rbfSigma = rbfSigma; // back this up
                         this.kernelType = "rbf";
                         kernel = makeRbfKernel(rbfSigma);
                     }
-                    if(options.kernel === "poly"){
+                    if(kernelType === "poly"){
                         let degree = options.degree || 2;
                         this.degree = degree;
                         let influence = options.influence || 1;
@@ -116,7 +153,7 @@ SVM.prototype = {
                         this.kernelType = "poly";
                         kernel = makePolyKernel(degree, influence);
                     }
-                    if(options.kernel === "sigm"){
+                    if(kernelType === "sigm"){
                         let influence = options.influence || 1;
                         if(influence<0) //cannot be negative
                             influence = 0; //setting to zero

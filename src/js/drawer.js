@@ -1,4 +1,4 @@
-let id = 0;
+let id = 1;
 export const drawer = function(algorithm, canvas, callback, options) {
   // this.id = 0;
   this.id = id;
@@ -31,15 +31,16 @@ drawer.prototype = {
         soft: {
           id: "soft",
           type: "radio",
-          name: "margin",
+          name: "margin" + this.id,
           value: "soft",
-          checked: true
+          checked: this.options.margin.soft
         },
         hard: {
           id: "hard",
           type: "radio",
-          name: "margin",
-          value: "hard"
+          name: "margin" + this.id,
+          value: "hard",
+          checked: !this.options.margin.soft
         }
       },
       data_radius: {

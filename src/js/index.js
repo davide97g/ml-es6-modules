@@ -55,7 +55,9 @@ let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
 
 let svm_linear = new SVM();
 let svm_linear_options = {
-  kernel: "linear",
+  kernel: {
+    linear: true
+  },
   degree: 1,
   influence: 0,
   C: 1,
@@ -66,12 +68,14 @@ let svm_linear_options = {
   karpathy: true,
   timer: null
 };
-svm_linear.train(data, labels, svm_linear_options);
 svm_linear.setOptions(svm_linear_options);
+svm_linear.train(data, labels);
 
 let svm_poly = new SVM();
 let svm_poly_options = {
-  kernel: "poly",
+  kernel: {
+    poly: true
+  },
   degree: 2,
   influence: 0,
   C: 1,
@@ -82,12 +86,14 @@ let svm_poly_options = {
   karpathy: true,
   timer: null
 };
-svm_poly.train(multi, labels, svm_poly_options);
 svm_poly.setOptions(svm_poly_options);
+svm_poly.train(multi, labels);
 
 let svm_rbf = new SVM();
 let svm_rbf_options = {
-  kernel: "rbf",
+  kernel: {
+    rbf: true
+  },
   degree: 2,
   influence: 0,
   C: 1,
@@ -98,8 +104,8 @@ let svm_rbf_options = {
   karpathy: true,
   timer: null
 };
-svm_rbf.train(multi, labels, svm_rbf_options);
 svm_rbf.setOptions(svm_rbf_options);
+svm_rbf.train(multi, labels);
 
 let knn = new KNN();
 let knn_options = {
@@ -227,23 +233,33 @@ drawers.push(
   })
 );
 
-let btn_execute = document.getElementById("execute");
-btn_execute.addEventListener("click", () => {
-  ui.setAllOptions();
-  training(data, labels);
-  manager.notifyAll(data, labels);
-});
+let btns = document.getElementsByClassName("execute");
+for (let i = 0; i < btns.length; i++) {
+  btns[i].addEventListener("click", () => {
+    ui.setAllOptions();
+    training(data, labels);
+    manager.notifyAll(data, labels);
+  });
+}
 
 let ui = new UI(document);
-// ui.createOptionsFrom(drawers[0]);
-ui.createOptionsFrom(knn, document.getElementById("knn-options"));
+
 ui.createOptionsFrom(svm_linear, document.getElementById("svm-linear-options"));
+ui.createOptionsFrom(drawers[0], document.getElementById("svm-linear-options"));
 ui.createOptionsFrom(svm_poly, document.getElementById("svm-poly-options"));
+ui.createOptionsFrom(drawers[1], document.getElementById("svm-poly-options"));
 ui.createOptionsFrom(svm_rbf, document.getElementById("svm-rbf-options"));
+ui.createOptionsFrom(drawers[2], document.getElementById("svm-rbf-options"));
+ui.createOptionsFrom(knn, document.getElementById("knn-options"));
+ui.createOptionsFrom(drawers[3], document.getElementById("knn-options"));
 ui.createOptionsFrom(rbf, document.getElementById("rbf-options"));
-ui.createOptionsFrom(nn, document.getElementById("nn-options"));
+ui.createOptionsFrom(drawers[4], document.getElementById("rbf-options"));
 ui.createOptionsFrom(randf, document.getElementById("randf-options"));
+ui.createOptionsFrom(drawers[5], document.getElementById("randf-options"));
 ui.createOptionsFrom(logreg, document.getElementById("logreg-options"));
+ui.createOptionsFrom(drawers[6], document.getElementById("logreg-options"));
+ui.createOptionsFrom(nn, document.getElementById("nn-options"));
+ui.createOptionsFrom(drawers[7], document.getElementById("nn-options"));
 
 drawers.forEach(drawer => manager.subscribe(drawer));
 manager.notifyAll(data, labels);
@@ -251,9 +267,9 @@ manager.notifyAll(data, labels);
 //_______________
 
 function training(data, labels) {
-  svm_linear.train(data, labels, svm_linear_options);
-  svm_poly.train(data, labels, svm_poly_options);
-  svm_rbf.train(data, labels, svm_rbf_options);
+  svm_linear.train(data, labels);
+  svm_poly.train(data, labels);
+  svm_rbf.train(data, labels);
   knn.train(data, labels);
   rbf.train(data, labels);
   randf.train(data, labels);

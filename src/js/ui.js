@@ -79,12 +79,12 @@ UI.prototype = {
     label.for = input.id;
 
     if (input.type === "range") {
-      config[input.id] = input.value;
+      config[input.id] = parseInt(input.value);
       let value = this.document.createElement("div");
-      value.innerHTML = input.value;
+      value.innerHTML = parseInt(input.value);
       input.addEventListener("change", () => {
-        value.innerHTML = input.value;
-        config[input.id] = input.value;
+        value.innerHTML = parseInt(input.value);
+        config[input.id] = parseInt(input.value);
       });
       return {
         label: label,
