@@ -11,14 +11,16 @@
     ></script>
   </head>
   <body>
-    <label for="xy">XY</label>
+    <!-- <label for="xy">XY</label>
     <input id="xy" checked name="predictors" type="radio" />
     <label for="yz">YZ</label>
     <input id="yz" name="predictors" type="radio" />
     <label for="xz">XZ</label>
     <input id="xz" name="predictors" type="radio" />
     <label for="margin">soft margin</label>
-    <input id="margin" checked type="checkbox" />
+    <input id="margin" checked type="checkbox" /> -->
+
+    <button id="execute">Execute</button>
 
     <div class="box">
       <p>Draw</p>
@@ -26,36 +28,60 @@
     </div>
 
     <div class="box">
-      <p>SVM linear</p>
-      <canvas id="svm-linear-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>SVM linear</p>
+        <canvas id="svm-linear-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="svm-linear-options"></div>
     </div>
     <div class="box">
-      <p>SVM poly</p>
-      <canvas id="svm-poly-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>SVM poly</p>
+        <canvas id="svm-poly-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="svm-poly-options"></div>
     </div>
     <div class="box">
-      <p>SVM rbf</p>
-      <canvas id="svm-rbf-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>SVM rbf</p>
+        <canvas id="svm-rbf-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="svm-rbf-options"></div>
     </div>
     <div class="box">
-      <p>KNN</p>
-      <canvas id="knn-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>KNN</p>
+        <canvas id="knn-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="knn-options"></div>
     </div>
     <div class="box">
-      <p>RBF</p>
-      <canvas id="rbf-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>RBF</p>
+        <canvas id="rbf-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="rbf-options"></div>
     </div>
     <div class="box">
-      <p>Random Forest</p>
-      <canvas id="randf-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>Random Forest</p>
+        <canvas id="randf-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="randf-options"></div>
     </div>
     <div class="box">
-      <p>Logistic Regression</p>
-      <canvas id="logreg-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>Logistic Regression</p>
+        <canvas id="logreg-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="logreg-options"></div>
     </div>
     <div class="box">
-      <p>Neural Network</p>
-      <canvas id="nn-canvas" width="400px" height="400px"></canvas>
+      <div class="drawer">
+        <p>Neural Network</p>
+        <canvas id="nn-canvas" width="400px" height="400px"></canvas>
+      </div>
+      <div class="options" id="nn-options"></div>
     </div>
   </body>
 </html>

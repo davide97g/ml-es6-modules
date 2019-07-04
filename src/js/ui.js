@@ -1,3 +1,9 @@
+/**
+ * @name UI
+ * @description
+ * A User Interface function
+ * @param {document} document
+ */
 export const UI = function(document) {
   this.document = document;
 
@@ -12,9 +18,16 @@ export const UI = function(document) {
   this.dataset_options = new DatasetOptions();
 };
 UI.prototype = {
+  /**
+   * @returns returns the configurations
+   */
   getAllConfigurations: function() {
     return this.configurations;
   },
+  /**
+   *
+   * @param {*} set the algorithm or the drawer to where to get the options
+   */
   getConfigFromSet: function(set) {
     let group = set.getOptions().group;
     return this.configurations[group][group];
@@ -25,12 +38,13 @@ UI.prototype = {
   setAllOptions: function() {
     this.sets.forEach(set => set.setOptions(this.getConfigFromSet(set)));
   },
-  createOptionsFrom: function(set) {
+  createOptionsFrom: function(set, container) {
     let set_options = set.getOptions();
     this.sets.push(set);
     let config = {};
     this.configurations[set_options.group] = config;
-    this.recursive(set_options, this.options_container, config);
+    container = container || this.options_container;
+    this.recursive(set_options, container, config);
   },
   recursive: function(options, container, config) {
     if (options.type !== undefined) {
@@ -49,7 +63,8 @@ UI.prototype = {
       }
       config[new_container.id] = new_config;
       let title = this.document.createElement("p");
-      title.innerHTML = new_container.id;
+      title.classList.add("title");
+      title.innerHTML = new_container.id + " options";
       container.appendChild(title);
       container.appendChild(new_container);
     }

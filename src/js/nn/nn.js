@@ -3,7 +3,6 @@ export const NeuralNet = function() {};
 NeuralNet.prototype = {
   train: function(data, labels) {
     this.options = this.options || {};
-    // let options = this.options;
     let layer_defs = this.options.layer_defs || [];
     if (layer_defs.length === 0) {
       layer_defs.push({ type: "input", out_sx: 1, out_sy: 1, out_depth: 2 });
@@ -32,7 +31,6 @@ NeuralNet.prototype = {
       }
     }
   },
-
   predict: function(point) {
     let a = this.net.forward(new Vol(point), false);
     return (Math.tanh(a.w[1] - a.w[0]) + 1) / 2;

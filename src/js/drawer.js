@@ -1,6 +1,6 @@
 let id = 0;
 export const drawer = function(algorithm, canvas, callback, options) {
-  this.id = 0;
+  // this.id = 0;
   this.id = id;
   id++;
   this.algorithm = algorithm;

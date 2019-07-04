@@ -1,25 +1,49 @@
 .box {
   text-align: center;
-  float: left;
+  display: block;
   padding: 2px;
+  overflow: hidden;
+  margin: auto;
+}
+
+.box canvas {
+  float: left;
+}
+
+.drawer {
+  float: left;
+  width: 400px;
+  height: 400px;
 }
 
 p {
   margin: 0;
   padding: 0;
-  width: auto;
 }
 
 /** UI classes */
 
-.options_container {
-  display: inline-block;
-  width: 400px;
+.options {
+  float: left;
+}
+
+#execute {
+  display: block;
   text-align: center;
+  margin: auto;
+}
+.title {
+  font-style: italic;
+  /* color: white; */
+  /* background: rgba(123, 160, 105, 0.849); */
 }
 .container {
-  display: inline-block;
-  background: rgba(250, 150, 150, 0.5);
+  /* display: inline-block; */
+  /* height: 250px; */
+  /* float: left; */
+  height: 400px;
+  width: 300px;
+  /* background: rgba(12, 99, 70, 0.377); */
   text-align: center;
 }
 

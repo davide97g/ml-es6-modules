@@ -10,32 +10,32 @@ import { UI } from "./ui";
 
 let manager = new Manager();
 
-let radioXY = document.getElementById("xy");
-radioXY.addEventListener("click", () => {
-  data = selectPredictors(multi, 0, 1);
-  drawers.forEach(drawer => drawer.draw(data, labels));
-});
+// let radioXY = document.getElementById("xy");
+// radioXY.addEventListener("click", () => {
+//   data = selectPredictors(multi, 0, 1);
+//   drawers.forEach(drawer => drawer.draw(data, labels));
+// });
 
-let radioYZ = document.getElementById("yz");
-radioYZ.addEventListener("click", () => {
-  data = selectPredictors(multi, 1, 2);
-  drawers.forEach(drawer => drawer.draw(data, labels));
-});
+// let radioYZ = document.getElementById("yz");
+// radioYZ.addEventListener("click", () => {
+//   data = selectPredictors(multi, 1, 2);
+//   drawers.forEach(drawer => drawer.draw(data, labels));
+// });
 
-let radioXZ = document.getElementById("xz");
-radioXZ.addEventListener("click", () => {
-  data = selectPredictors(multi, 0, 2);
-  drawers.forEach(drawer => drawer.draw(data, labels));
-});
+// let radioXZ = document.getElementById("xz");
+// radioXZ.addEventListener("click", () => {
+//   data = selectPredictors(multi, 0, 2);
+//   drawers.forEach(drawer => drawer.draw(data, labels));
+// });
 
-let MARGIN = document.getElementById("margin");
-MARGIN.addEventListener("click", () => {
-  let margin;
-  if (MARGIN.checked) margin = "soft";
-  else margin = "hard";
-  drawers.forEach(drawer => drawer.setOptions({ margin: margin }));
-  drawers.forEach(drawer => drawer.draw(data, labels));
-});
+// let MARGIN = document.getElementById("margin");
+// MARGIN.addEventListener("click", () => {
+//   let margin;
+//   if (MARGIN.checked) margin = "soft";
+//   else margin = "hard";
+//   drawers.forEach(drawer => drawer.setOptions({ margin: margin }));
+//   drawers.forEach(drawer => drawer.draw(data, labels));
+// });
 
 let multi = [
   [1, 0, 2],
@@ -227,24 +227,23 @@ drawers.push(
   })
 );
 
+let btn_execute = document.getElementById("execute");
+btn_execute.addEventListener("click", () => {
+  ui.setAllOptions();
+  training(data, labels);
+  manager.notifyAll(data, labels);
+});
+
 let ui = new UI(document);
-ui.createOptionsFrom(knn);
-ui.createOptionsFrom(svm_rbf);
-ui.createOptionsFrom(rbf);
-ui.createOptionsFrom(nn);
-ui.createOptionsFrom(randf);
-ui.createOptionsFrom(logreg);
-ui.createOptionsFrom(drawers[0]);
-
-let btn = document.createElement("button");
-btn.innerHTML = "getConfig()";
-btn.addEventListener("click", () => console.info(ui.getAllConfigurations()));
-document.body.appendChild(btn);
-
-let btn_set = document.createElement("button");
-btn_set.innerHTML = "set config";
-btn_set.addEventListener("click", () => ui.setAllOptions());
-document.body.appendChild(btn_set);
+// ui.createOptionsFrom(drawers[0]);
+ui.createOptionsFrom(knn, document.getElementById("knn-options"));
+ui.createOptionsFrom(svm_linear, document.getElementById("svm-linear-options"));
+ui.createOptionsFrom(svm_poly, document.getElementById("svm-poly-options"));
+ui.createOptionsFrom(svm_rbf, document.getElementById("svm-rbf-options"));
+ui.createOptionsFrom(rbf, document.getElementById("rbf-options"));
+ui.createOptionsFrom(nn, document.getElementById("nn-options"));
+ui.createOptionsFrom(randf, document.getElementById("randf-options"));
+ui.createOptionsFrom(logreg, document.getElementById("logreg-options"));
 
 drawers.forEach(drawer => manager.subscribe(drawer));
 manager.notifyAll(data, labels);
