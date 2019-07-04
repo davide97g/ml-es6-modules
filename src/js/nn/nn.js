@@ -1,9 +1,10 @@
 import { Net, Vol, Trainer } from "./convnet";
 export const NeuralNet = function() {};
 NeuralNet.prototype = {
-  train: function(data, labels, options) {
-    options = options || {};
-    let layer_defs = options.layer_defs || [];
+  train: function(data, labels) {
+    this.options = this.options || {};
+    // let options = this.options;
+    let layer_defs = this.options.layer_defs || [];
     if (layer_defs.length === 0) {
       layer_defs.push({ type: "input", out_sx: 1, out_sy: 1, out_depth: 2 });
       layer_defs.push({ type: "fc", num_neurons: 4, activation: "tanh" });
@@ -15,7 +16,7 @@ NeuralNet.prototype = {
     this.net = new Net();
     this.net.makeLayers(layer_defs);
 
-    let training_options = options.training || {};
+    let training_options = this.options.training || {};
     let trainer = new Trainer(this.net, {
       learning_rate: training_options.learning_rate || 0.01,
       momentum: training_options.momentum || 0.1,
@@ -88,5 +89,8 @@ NeuralNet.prototype = {
       }
     };
     return options;
+  },
+  setOptions: function(options) {
+    this.options = options;
   }
 };

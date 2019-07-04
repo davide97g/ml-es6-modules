@@ -5,6 +5,11 @@ export const SVM = function() {};
 
 SVM.prototype = {
 
+    setOptions: function(options) {
+        this.options = options;
+        this.train(this.data, this.labels, this.options);
+      },
+
     getOptions: function(){
         let options = {
             group:"svm",
@@ -15,6 +20,11 @@ SVM.prototype = {
                 max: 2,
                 step: 0.1,
                 value: this.C
+            },
+            karpathy:{
+                id:"karpathy",
+                type:"checkbox",
+                checked: true
             }
         };
         if(this.kernelType === "linear"){}
@@ -50,6 +60,7 @@ SVM.prototype = {
 
             // parameters
             options = options || {};
+            this.options = options;
             let C = options.C || 1.0; // C value. Decrease for more regularization
             let tol = options.tol || 1e-4; // numerical tolerance. Don't touch unless you're pro
             let alphatol = options.alphatol || 0; // non-support vectors for space and time efficiency are truncated. To guarantee correct result set this to 0 to do no truncating. If you want to increase efficiency, experiment with setting this little higher, up to maybe 1e-4 or so.
@@ -806,7 +817,7 @@ SVM.prototype = {
             statistics.iters = iter;
             */
 
-            this.ROC();
+            // this.ROC();
 
             //this.check();
 

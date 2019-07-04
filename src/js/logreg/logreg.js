@@ -173,8 +173,12 @@ LogisticRegression.prototype.getOptions = function() {
   return options;
 };
 
-LogisticRegression.prototype.train = function(data, labels, options) {
-  let config = options || {};
+LogisticRegression.prototype.setOptions = function(options) {
+  this.options = options;
+};
+
+LogisticRegression.prototype.train = function(data, labels) {
+  let config = this.options || {};
   if (!config.alpha) {
     config.alpha = 0.001;
   }
@@ -308,21 +312,21 @@ LogisticRegression.prototype.predictClass = function(x) {
   return this.predict(x) > 0.5 ? 1 : -1;
 };
 
-LogisticRegression.prototype.setOptions = function(configurations) {
-  let config_update = configurations || {};
-  if (!config_update.alpha) {
-    config_update.alpha = 0.001;
-  }
-  if (!config_update.iterations) {
-    config_update.iterations = 100;
-  }
-  if (!config_update.lambda) {
-    config_update.lambda = 0;
-  }
-  this.alpha = config_update.alpha;
-  this.lambda = config_update.lambda;
-  this.iterations = config_update.iterations;
-};
+// LogisticRegression.prototype.setOptions = function(configurations) {
+//   let config_update = configurations || {};
+//   if (!config_update.alpha) {
+//     config_update.alpha = 0.001;
+//   }
+//   if (!config_update.iterations) {
+//     config_update.iterations = 100;
+//   }
+//   if (!config_update.lambda) {
+//     config_update.lambda = 0;
+//   }
+//   this.alpha = config_update.alpha;
+//   this.lambda = config_update.lambda;
+//   this.iterations = config_update.iterations;
+// };
 
 LogisticRegression.prototype.cost = function(X, Y, theta) {
   let N = X.length;

@@ -1,18 +1,82 @@
+let id = 0;
 export const drawer = function(algorithm, canvas, callback, options) {
+  this.id = 0;
+  this.id = id;
+  id++;
   this.algorithm = algorithm;
   this.ctx = canvas.getContext("2d");
   if (callback !== undefined)
     canvas.addEventListener("click", e => callback(eventClick(canvas, e)));
   this.WIDTH = canvas.width;
   this.HEIGHT = canvas.height;
-  this.options = options || { margin: "soft" };
+  this.options = options || {
+    margin: {
+      soft: true
+    },
+    data_radius: 6,
+    test_radius: 4
+  };
   this.options.WIDTH = this.WIDTH;
-  this.options.HEIGHT = canvas.height;
-  this.ss = options.ss || 20;
-  this.density = options.density || 3;
+  this.options.HEIGHT = this.HEIGHT;
+  this.options.ss = this.options.ss || 20;
+  this.options.density = this.options.density || 3;
 };
 
 drawer.prototype = {
+  getOptions: function() {
+    let options = {
+      group: "drawer" + this.id,
+      margin: {
+        group: "margin",
+        soft: {
+          id: "soft",
+          type: "radio",
+          name: "margin",
+          value: "soft",
+          checked: true
+        },
+        hard: {
+          id: "hard",
+          type: "radio",
+          name: "margin",
+          value: "hard"
+        }
+      },
+      data_radius: {
+        id: "data_radius",
+        type: "range",
+        min: 1,
+        max: 10,
+        step: 1,
+        value: 6
+      },
+      test_radius: {
+        id: "test_radius",
+        type: "range",
+        min: 1,
+        max: 10,
+        step: 1,
+        value: 4
+      },
+      ss: {
+        id: "ss",
+        type: "range",
+        min: 10,
+        max: 50,
+        step: 1,
+        value: 20
+      },
+      density: {
+        id: "density",
+        type: "range",
+        min: 1,
+        max: 10,
+        step: 1,
+        value: 3
+      }
+    };
+    return options;
+  },
   setManager: function(manager) {
     this.manager = manager;
   },
@@ -34,25 +98,25 @@ drawer.prototype = {
   },
   drawGrid: function() {
     //draw screen
-    for (let x = 0.0; x <= this.WIDTH; x += this.density) {
-      for (let y = 0.0; y <= this.HEIGHT; y += this.density) {
+    for (let x = 0.0; x <= this.WIDTH; x += this.options.density) {
+      for (let y = 0.0; y <= this.HEIGHT; y += this.options.density) {
         let predicted_class = this.algorithm.predictClass([
-          (x - this.WIDTH / 2) / this.ss,
-          (y - this.HEIGHT / 2) / this.ss
+          (x - this.WIDTH / 2) / this.options.ss,
+          (y - this.HEIGHT / 2) / this.options.ss
         ]);
         let predicted_value = 0;
-        if (this.options.margin === "soft")
+        if (this.options.margin.soft)
           predicted_value = this.algorithm.predict([
-            (x - this.WIDTH / 2) / this.ss,
-            (y - this.HEIGHT / 2) / this.ss
+            (x - this.WIDTH / 2) / this.options.ss,
+            (y - this.HEIGHT / 2) / this.options.ss
           ]);
         else predicted_value = predicted_class;
         this.ctx.fillStyle = getColor(predicted_value, predicted_class);
         this.ctx.fillRect(
-          x - this.density / 2 - 1,
-          y - this.density - 1,
-          this.density + 2,
-          this.density + 2
+          x - this.options.density / 2 - 1,
+          y - this.options.density - 1,
+          this.options.density + 2,
+          this.options.density + 2
         );
       }
     }
@@ -68,25 +132,25 @@ drawer.prototype = {
     this.ctx.stroke();
   },
   drawPoints: function(points, labels) {
-    let radius = 6;
+    let radius = this.options.data_radius || 6;
     for (let i = 0; i < points.length; i++) {
       let prediction = this.algorithm.predictClass(points[i]);
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
-        points[i][0] * this.ss + this.WIDTH / 2,
-        points[i][1] * this.ss + this.HEIGHT / 2,
+        points[i][0] * this.options.ss + this.WIDTH / 2,
+        points[i][1] * this.options.ss + this.HEIGHT / 2,
         radius
       );
     }
   },
   drawTestPoints: function(points, labels) {
-    let radius = 4;
+    let radius = this.options.test_radius || 4;
     for (let i = 0; i < points.length; i++) {
       let prediction = this.algorithm.predictClass(points[i]);
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
-        points[i][0] * this.ss + this.WIDTH / 2,
-        points[i][1] * this.ss + this.HEIGHT / 2,
+        points[i][0] * this.options.ss + this.WIDTH / 2,
+        points[i][1] * this.options.ss + this.HEIGHT / 2,
         radius
       );
     }
@@ -105,9 +169,9 @@ export const master_drawer = function(canvas, callback, options) {
   canvas.addEventListener("click", e => callback(eventClick(canvas, e)));
   this.WIDTH = canvas.width;
   this.HEIGHT = canvas.height;
-  this.options = options;
-  this.ss = options.ss || 20;
-  this.density = options.density || 3;
+  this.options = options || {};
+  this.ss = this.options.ss || 20;
+  this.density = this.options.density || 3;
 };
 
 master_drawer.prototype = {

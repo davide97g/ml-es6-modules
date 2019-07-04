@@ -1,10 +1,10 @@
 import { Distances } from "./distances/distances.js";
 export const KNN = function() {};
 KNN.prototype = {
-  train: function(data, labels, options) {
+  train: function(data, labels) {
     this.data = data;
     this.labels = labels;
-    this.options = options || {};
+    this.options = this.options || {};
     let k = this.options.k || 1;
     if (k < 1) k = 1;
     if (k > this.data.length) {
@@ -16,7 +16,10 @@ KNN.prototype = {
     this.k = k;
     this.distances = new Distances();
     this.distances.setDataSet(data);
-    let distance = this.options.distance || "minkowski";
+    let distance;
+    for (let d in this.options.distance) {
+      if (this.options.distance[d]) distance = d;
+    }
     this.distances.setDefault(distance);
     if (distance === "minkowski") {
       let p = this.options.p || 1;
@@ -111,5 +114,8 @@ KNN.prototype = {
       }
     };
     return options;
+  },
+  setOptions: function(options) {
+    this.options = options;    
   }
 };

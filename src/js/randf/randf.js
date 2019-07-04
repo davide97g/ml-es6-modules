@@ -18,15 +18,15 @@ RandomForest.prototype = {
                      and model will be the same model that you return in options.trainFun. For example, model.myvar will be 5.
                      see decisionStumpTrain() and decisionStumpTest() downstairs for example.
     */
-  train: function(data, labels, options) {
-    options = options || {};
-    this.numTrees = options.numTrees || 100;
+  train: function(data, labels) {
+    this.options = this.options || {};
+    this.numTrees = this.options.numTrees || 100;
 
     // initialize many trees and train them all independently
     this.trees = new Array(this.numTrees);
     for (let i = 0; i < this.numTrees; i++) {
       this.trees[i] = new DecisionTree();
-      this.trees[i].train(data, labels, options);
+      this.trees[i].train(data, labels, this.options);
     }
   },
 
@@ -77,6 +77,9 @@ RandomForest.prototype = {
       }
     };
     return options;
+  },
+  setOptions: function(options) {
+    this.options = options;
   }
 };
 
@@ -106,7 +109,7 @@ DecisionTree.prototype = {
 
     // initialize various helper variables
     let numInternals = Math.pow(2, maxDepth) - 1;
-    let numNodes = Math.pow(2, maxDepth + 1) - 1;
+    let numNodes = Math.pow(2, parseInt(maxDepth) + 1) - 1;
     let ixs = new Array(numNodes);
     for (let i = 1; i < ixs.length; i++) ixs[i] = [];
     ixs[0] = new Array(labels.length);

@@ -1,11 +1,11 @@
 export const RBF = function() {};
 RBF.prototype = {
-  train: function(data, labels, options) {
+  train: function(data, labels) {
     this.data = data;
     this.labels = labels;
-    options = options || {};
-    this.epsilon = options.epsilon || 0.1;
-    this.rbfSigma = options.rbfSigma || 0.5;
+    this.options = this.options || {};
+    this.epsilon = this.options.epsilon || 0.1;
+    this.rbfSigma = this.options.rbfSigma || 0.5;
   },
   predict: function(point) {
     return (Math.tanh(this.rbf(point) / Math.pow(this.epsilon, 2)) + 1) / 2;
@@ -45,5 +45,8 @@ RBF.prototype = {
       }
     };
     return options;
+  },
+  setOptions: function(options) {
+    this.options = options;
   }
 };

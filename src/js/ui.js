@@ -6,50 +6,36 @@ export const UI = function(document) {
   this.options_container.classList.add("options_container");
   this.document.body.appendChild(this.options_container);
 
-  this.config = {};
+  this.configurations = {};
+  this.sets = [];
 
-  this.draw_options = new DrawOptions();
-  this.algorithm_options = new AlgorithmOptions(document);
   this.dataset_options = new DatasetOptions();
 };
 UI.prototype = {
-  setUpAlgorithm: function(algorithm) {
-    this.algorithm_options.getOptionsFromAlgorithm(
-      algorithm,
-      this.options_container,
-      this.config
-    );
+  getAllConfigurations: function() {
+    return this.configurations;
   },
-  getOptionsValue: function() {
-    this.algorithm_options.getOptionsValue();
+  getConfigFromSet: function(set) {
+    let group = set.getOptions().group;
+    return this.configurations[group][group];
   },
-  getConfig: function() {
-    return this.algorithm_options.getConfig();
-  }
-};
-
-const DrawOptions = function() {};
-DrawOptions.prototype = {};
-
-const AlgorithmOptions = function(document) {
-  this.document = document;
-};
-AlgorithmOptions.prototype = {
-  getConfig: function() {
-    return this.config;
+  setOptionsOfSet: function(set) {
+    set.setOptions(this.getConfigFromSet(set));
   },
-  getOptionsFromAlgorithm: function(algorithm, options_container, config) {
-    this.options_container = options_container || {};
-    this.config = config || {};
-    this.algorithm_options = algorithm.getOptions();
-    this.recursive(this.algorithm_options, this.options_container, this.config);
+  setAllOptions: function() {
+    this.sets.forEach(set => set.setOptions(this.getConfigFromSet(set)));
+  },
+  createOptionsFrom: function(set) {
+    let set_options = set.getOptions();
+    this.sets.push(set);
+    let config = {};
+    this.configurations[set_options.group] = config;
+    this.recursive(set_options, this.options_container, config);
   },
   recursive: function(options, container, config) {
     if (options.type !== undefined) {
       let res = this.createProperty(options, config);
-      for (let child in res) {
-        container.appendChild(res[child]);
-      }
+      for (let child in res) container.appendChild(res[child]);
     } else {
       let new_container = this.document.createElement("div");
       new_container.classList.add("container");
@@ -72,9 +58,7 @@ AlgorithmOptions.prototype = {
     let input = this.document.createElement("input");
     let label = this.document.createElement("label");
 
-    for (let key in property) {
-      input[key] = property[key];
-    }
+    for (let key in property) input[key] = property[key];
 
     label.innerHTML = input.id;
     label.for = input.id;
@@ -93,10 +77,10 @@ AlgorithmOptions.prototype = {
         value: value
       };
     } else {
-      //choice
+      //radio or checkbox
       config[input.id] = input.checked;
       input.addEventListener("change", () => {
-        for(let c in config) config[c] = false;
+        for (let c in config) config[c] = false;
         config[input.id] = input.checked;
       });
       return {
@@ -105,15 +89,6 @@ AlgorithmOptions.prototype = {
       };
     }
   }
-  // getOptionsValue: function() {
-  //   let containers = this.options_container.getElementsByClassName("container");
-  //   for (let i = 0; i < containers.length; i++)
-  //     this.generateOptionsForAlgorithm(containers[i]);
-  // },
-  // generateOptionsForAlgorithm(algorithm_options) {
-  //   if(algorithm_options.id!== undefined)
-  //     console.info(algorithm_options);
-  // }
 };
 
 const DatasetOptions = function() {};

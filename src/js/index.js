@@ -67,6 +67,7 @@ let svm_linear_options = {
   timer: null
 };
 svm_linear.train(data, labels, svm_linear_options);
+svm_linear.setOptions(svm_linear_options);
 
 let svm_poly = new SVM();
 let svm_poly_options = {
@@ -82,6 +83,7 @@ let svm_poly_options = {
   timer: null
 };
 svm_poly.train(multi, labels, svm_poly_options);
+svm_poly.setOptions(svm_poly_options);
 
 let svm_rbf = new SVM();
 let svm_rbf_options = {
@@ -97,35 +99,45 @@ let svm_rbf_options = {
   timer: null
 };
 svm_rbf.train(multi, labels, svm_rbf_options);
+svm_rbf.setOptions(svm_rbf_options);
 
 let knn = new KNN();
 let knn_options = {
   k: 3,
-  distance: "mahalanobis",
+  distance: {
+    mahalanobis: false,
+    chebyshev: true,
+    minkowski: false
+  },
   p: 1.5
 };
-knn.train(multi, labels, knn_options);
+knn.setOptions(knn_options);
+knn.train(multi, labels);
 
 let rbf = new RBF();
 let rbf_options = {
   epsilon: 0.1,
   rbfSigma: 0.5
 };
-rbf.train(multi, labels, rbf_options);
+rbf.setOptions(rbf_options);
+rbf.train(multi, labels);
 
 let randf = new RANDF();
 let randf_options = {
   numTrees: 100
 };
-randf.train(data, labels, randf_options);
+randf.setOptions(randf_options);
+randf.train(data, labels);
 
 let logreg = new LOGREG();
 let logreg_options = {};
-logreg.train(multi, labels, logreg_options);
+logreg.setOptions(logreg_options);
+logreg.train(multi, labels);
 
 let nn = new NeuralNet();
 let nn_options = {};
-nn.train(multi, labels, nn_options);
+nn.setOptions(nn_options);
+nn.train(multi, labels);
 
 // update canvas on mouseclick
 let mouseClick = ({ x, y, shiftPressed }) => {
@@ -159,69 +171,83 @@ drawers.push(
     document.getElementById("svm-linear-canvas"),
     mouseClick,
     {
-      margin: "soft"
+      margin: {
+        soft: true
+      }
     }
   )
 );
 drawers.push(
   new drawer(svm_poly, document.getElementById("svm-poly-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(svm_rbf, document.getElementById("svm-rbf-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(knn, document.getElementById("knn-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(rbf, document.getElementById("rbf-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(randf, document.getElementById("randf-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(logreg, document.getElementById("logreg-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 drawers.push(
   new drawer(nn, document.getElementById("nn-canvas"), mouseClick, {
-    margin: "soft"
+    margin: {
+      soft: true
+    }
   })
 );
 
 let ui = new UI(document);
-ui.setUpAlgorithm(knn);
-ui.setUpAlgorithm(svm_rbf);
-ui.setUpAlgorithm(rbf);
-ui.setUpAlgorithm(nn);
-ui.setUpAlgorithm(logreg);
-ui.setUpAlgorithm(randf);
-
-let config = ui.getConfig();
-console.info(config);
+ui.createOptionsFrom(knn);
+ui.createOptionsFrom(svm_rbf);
+ui.createOptionsFrom(rbf);
+ui.createOptionsFrom(nn);
+ui.createOptionsFrom(randf);
+ui.createOptionsFrom(logreg);
+ui.createOptionsFrom(drawers[0]);
 
 let btn = document.createElement("button");
 btn.innerHTML = "getConfig()";
-btn.addEventListener("click", () => console.info(ui.getConfig()));
+btn.addEventListener("click", () => console.info(ui.getAllConfigurations()));
 document.body.appendChild(btn);
 
-// ui.getOptionsValue();
+let btn_set = document.createElement("button");
+btn_set.innerHTML = "set config";
+btn_set.addEventListener("click", () => ui.setAllOptions());
+document.body.appendChild(btn_set);
 
 drawers.forEach(drawer => manager.subscribe(drawer));
 manager.notifyAll(data, labels);
-
-//draw all
-// drawers.forEach(drawer => drawer.draw(data, labels));
 
 //_______________
 
@@ -229,11 +255,11 @@ function training(data, labels) {
   svm_linear.train(data, labels, svm_linear_options);
   svm_poly.train(data, labels, svm_poly_options);
   svm_rbf.train(data, labels, svm_rbf_options);
-  knn.train(data, labels, knn_options);
-  rbf.train(data, labels, rbf_options);
-  randf.train(data, labels, randf_options);
-  logreg.train(data, labels, logreg_options);
-  nn.train(data, labels, nn_options);
+  knn.train(data, labels);
+  rbf.train(data, labels);
+  randf.train(data, labels);
+  logreg.train(data, labels);
+  nn.train(data, labels);
 }
 
 function selectPredictors(data, chosen1, chosen2) {
