@@ -1,12 +1,11 @@
 let id = 1;
-export const drawer = function(algorithm, canvas, callback, options) {
+export const drawer = function(algorithm, canvas, options) {
   // this.id = 0;
   this.id = id;
   id++;
   this.algorithm = algorithm;
   this.ctx = canvas.getContext("2d");
-  if (callback !== undefined)
-    canvas.addEventListener("click", e => callback(eventClick(canvas, e)));
+  canvas.addEventListener("click", e => this.mouseClick(eventClick(canvas, e)));
   this.WIDTH = canvas.width;
   this.HEIGHT = canvas.height;
   this.options = options || {
@@ -62,7 +61,7 @@ drawer.prototype = {
       ss: {
         id: "ss",
         type: "range",
-        min: 10,
+        min: 1,
         max: 50,
         step: 1,
         value: 20
@@ -83,6 +82,9 @@ drawer.prototype = {
   },
   setAlgorithm: function(algorithm) {
     this.algorithm = algorithm;
+  },
+  getAlgorithm: function() {
+    return this.algorithm;
   },
   setOptions: function(options) {
     this.options = options || {};
@@ -162,6 +164,17 @@ drawer.prototype = {
     this.ctx.closePath();
     this.ctx.stroke();
     this.ctx.fill();
+  },
+  mouseClick: function({ x, y, shiftPressed }) {
+    let data = [
+      (x - this.WIDTH / 2) / this.options.ss,
+      (y - this.HEIGHT / 2) / this.options.ss
+    ];
+    let label = shiftPressed ? 1 : -1;
+    // store point
+    this.manager.addPoint(data, label);
+    // draw all
+    this.manager.notifyAll();
   }
 };
 

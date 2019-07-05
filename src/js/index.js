@@ -7,8 +7,10 @@ import { drawer, master_drawer } from "./drawer";
 import { NeuralNet } from "./nn/nn";
 import { Manager } from "./manager";
 import { UI } from "./ui";
+import { dataset_generator } from "./dataset";
 
 let manager = new Manager();
+let generator = new dataset_generator();
 
 // let radioXY = document.getElementById("xy");
 // radioXY.addEventListener("click", () => {
@@ -52,6 +54,8 @@ let multi = [
 
 let data = selectPredictors(multi, 0, 1);
 let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
+
+manager.setDataSet(data, labels);
 
 let svm_linear = new SVM();
 let svm_linear_options = {
@@ -145,88 +149,83 @@ let nn_options = {};
 nn.setOptions(nn_options);
 nn.train(multi, labels);
 
-// update canvas on mouseclick
-let mouseClick = ({ x, y, shiftPressed }) => {
-  // store point
-  data.push([
-    (x - master.WIDTH / 2) / master.ss,
-    (y - master.HEIGHT / 2) / master.ss
-  ]);
-  labels.push(shiftPressed ? 1 : -1);
+// // update canvas on mouseclick
+// let mouseClick = ({ x, y, shiftPressed }) => {
+//   // store point
+//   data.push([
+//     (x - master.WIDTH / 2) / master.ss,
+//     (y - master.HEIGHT / 2) / master.ss
+//   ]);
+//   labels.push(shiftPressed ? 1 : -1);
 
-  // draw master
-  master.draw(data, labels);
+//   // draw master
+//   master.draw(data, labels);
 
-  // train
-  training(data, labels);
+//   // train
+//   training(data, labels);
 
-  // draw all
-  manager.notifyAll(data, labels);
-};
+//   // draw all
+//   manager.notifyAll(data, labels);
+// };
 
 let drawers = [];
-//master canvas with mouse click event listener
-let master_canvas = document.getElementById("draw-canvas-test");
-let master = new master_drawer(master_canvas, mouseClick, {});
-master.draw(data, labels);
+// //master canvas with mouse click event listener
+// let master_canvas = document.getElementById("draw-canvas-test");
+// let master = new master_drawer(master_canvas, mouseClick, {});
+// master.draw(data, labels);
 
 //create the other drawers
 drawers.push(
-  new drawer(
-    svm_linear,
-    document.getElementById("svm-linear-canvas"),
-    mouseClick,
-    {
-      margin: {
-        soft: true
-      }
-    }
-  )
-);
-drawers.push(
-  new drawer(svm_poly, document.getElementById("svm-poly-canvas"), mouseClick, {
+  new drawer(svm_linear, document.getElementById("svm-linear-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(svm_rbf, document.getElementById("svm-rbf-canvas"), mouseClick, {
+  new drawer(svm_poly, document.getElementById("svm-poly-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(knn, document.getElementById("knn-canvas"), mouseClick, {
+  new drawer(svm_rbf, document.getElementById("svm-rbf-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(rbf, document.getElementById("rbf-canvas"), mouseClick, {
+  new drawer(knn, document.getElementById("knn-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(randf, document.getElementById("randf-canvas"), mouseClick, {
+  new drawer(rbf, document.getElementById("rbf-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(logreg, document.getElementById("logreg-canvas"), mouseClick, {
+  new drawer(randf, document.getElementById("randf-canvas"), {
     margin: {
       soft: true
     }
   })
 );
 drawers.push(
-  new drawer(nn, document.getElementById("nn-canvas"), mouseClick, {
+  new drawer(logreg, document.getElementById("logreg-canvas"), {
+    margin: {
+      soft: true
+    }
+  })
+);
+drawers.push(
+  new drawer(nn, document.getElementById("nn-canvas"), {
     margin: {
       soft: true
     }
@@ -237,12 +236,37 @@ let btns = document.getElementsByClassName("execute");
 for (let i = 0; i < btns.length; i++) {
   btns[i].addEventListener("click", () => {
     ui.setAllOptions();
-    training(data, labels);
-    manager.notifyAll(data, labels);
+    manager.notifyAll();
   });
 }
 
-let ui = new UI(document);
+let N = 50;
+let label_slider = document.createElement("label");
+label_slider.innerHTML = "N:" + N;
+label_slider.for = "N";
+let slider = document.createElement("input");
+slider.id = "N";
+slider.type = "range";
+slider.value = 50;
+slider.min = 10;
+slider.max = 300;
+slider.step = 10;
+slider.addEventListener("change", () => {
+  N = slider.value; 
+  label_slider.innerHTML = "N:" + N;
+});
+document.getElementById("datasets").appendChild(label_slider);
+document.getElementById("datasets").appendChild(slider);
+let ui = new UI(document, generator);
+
+let dataset_btns = document.getElementsByClassName("datasets");
+for (let i = 0; i < dataset_btns.length; i++) {
+  dataset_btns[i].addEventListener("click", () => {
+    let res = ui.generateDataSet(dataset_btns[i].id, N);
+    manager.setDataSet(res.data, res.labels);
+    manager.notifyAll();
+  });
+}
 
 ui.createOptionsFrom(svm_linear, document.getElementById("svm-linear-options"));
 ui.createOptionsFrom(drawers[0], document.getElementById("svm-linear-options"));
@@ -262,20 +286,20 @@ ui.createOptionsFrom(nn, document.getElementById("nn-options"));
 ui.createOptionsFrom(drawers[7], document.getElementById("nn-options"));
 
 drawers.forEach(drawer => manager.subscribe(drawer));
-manager.notifyAll(data, labels);
+manager.notifyAll();
 
 //_______________
 
-function training(data, labels) {
-  svm_linear.train(data, labels);
-  svm_poly.train(data, labels);
-  svm_rbf.train(data, labels);
-  knn.train(data, labels);
-  rbf.train(data, labels);
-  randf.train(data, labels);
-  logreg.train(data, labels);
-  nn.train(data, labels);
-}
+// function training(data, labels) {
+//   svm_linear.train(data, labels);
+//   svm_poly.train(data, labels);
+//   svm_rbf.train(data, labels);
+//   knn.train(data, labels);
+//   rbf.train(data, labels);
+//   randf.train(data, labels);
+//   logreg.train(data, labels);
+//   nn.train(data, labels);
+// }
 
 function selectPredictors(data, chosen1, chosen2) {
   let predictors = [];

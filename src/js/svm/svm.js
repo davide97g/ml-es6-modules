@@ -27,6 +27,11 @@ SVM.prototype = {
                 type:"checkbox",
                 checked: true
             },
+            memoize:{
+                id:"memoize",
+                type:"checkbox",
+                checked: true
+            },
             kernel:{
                 group:"kernel",
                 linear:{
@@ -121,7 +126,8 @@ SVM.prototype = {
                     // kernel was specified as a string. Handle these special cases appropriately
                     if(kernelType === "linear") {
                         this.kernelType = "linear";
-                        kernel = linearKernel;let input_functions = options.input_functions || null;
+                        kernel = linearKernel;
+                        let input_functions = options.input_functions || null;
                         this.input_transformation = false;
                         if (input_functions !== null && input_functions.length > 0) {
                             this.input_transformation = true;
@@ -211,6 +217,7 @@ SVM.prototype = {
                     this.karpathySMO();
                     this.store();
                     let t1 = performance.now();
+                    // console.info(t1-t0);
                     return t1-t0;
                 }
             }
@@ -226,6 +233,7 @@ SVM.prototype = {
                 }
                 this.store();
                 let t1 = performance.now();
+                // console.info(t1-t0);
                 return t1-t0;
             }
 
@@ -264,7 +272,6 @@ SVM.prototype = {
                         for (let i = 0; i < weights.length; i++)
                             drawIntermidiate(this.ctx, weights[i]);
                     }
-                    console.info( "🐧 TRAIN end");
                 }
             }, updateFrequency);
         },

@@ -4,7 +4,7 @@
  * A User Interface function
  * @param {document} document
  */
-export const UI = function(document) {
+export const UI = function(document, dataset_generator) {
   this.document = document;
 
   this.options_container = document.createElement("div");
@@ -15,7 +15,7 @@ export const UI = function(document) {
   this.configurations = {};
   this.sets = [];
 
-  this.dataset_options = new DatasetOptions();
+  this.dataset_options = new DatasetOptions(dataset_generator);
 };
 UI.prototype = {
   /**
@@ -79,20 +79,19 @@ UI.prototype = {
     label.for = input.id;
 
     if (input.type === "range") {
-      config[input.id] = parseInt(input.value);
+      config[input.id] = parseFloat(input.value);
       let value = this.document.createElement("div");
-      value.innerHTML = parseInt(input.value);
+      value.innerHTML = parseFloat(input.value);
       input.addEventListener("change", () => {
-        value.innerHTML = parseInt(input.value);
-        config[input.id] = parseInt(input.value);
+        value.innerHTML = parseFloat(input.value);
+        config[input.id] = parseFloat(input.value);
       });
       return {
         label: label,
         input: input,
         value: value
       };
-    } else {
-      //radio or checkbox
+    } else if (input.type === "radio") {
       config[input.id] = input.checked;
       input.addEventListener("change", () => {
         for (let c in config) config[c] = false;
@@ -102,9 +101,44 @@ UI.prototype = {
         label: label,
         input: input
       };
+    } else {
+      config[input.id] = input.checked;
+      input.addEventListener("change", () => {
+        config[input.id] = input.checked;
+      });
+      return {
+        label: label,
+        input: input
+      };
+    }
+  },
+  generateDataSet: function(dataset_id, N) {
+    return this.dataset_options.generateDataSet(dataset_id, N);
+  }
+};
+
+const DatasetOptions = function(dataset_generator) {
+  this.dataset_generator = dataset_generator;
+};
+DatasetOptions.prototype = {
+  generateDataSet: function(dataset_id, N) {
+    if (dataset_id === "circle") {
+      return this.dataset_generator.circleData(N);
+    } else if (dataset_id === "multi-circle") {
+      return this.dataset_generator.circleMultipleData(N);
+    } else if (dataset_id === "exclusive") {
+      return this.dataset_generator.exclusiveOrData(N);
+    } else if (dataset_id === "gaussian") {
+      return this.dataset_generator.gaussianData(N);
+    } else if (dataset_id === "spiral") {
+      return this.dataset_generator.spiralData(N);
+    } else if (dataset_id === "stripes-v") {
+      return this.dataset_generator.stripesVData(N);
+    } else if (dataset_id === "stripes-h") {
+      return this.dataset_generator.stripesHData(N);
+    } else if (dataset_id === "random") {
+      return this.dataset_generator.randomData(N);
     }
   }
 };
 
-const DatasetOptions = function() {};
-DatasetOptions.prototype = {};
