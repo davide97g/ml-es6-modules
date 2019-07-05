@@ -68,7 +68,9 @@ let svm_linear_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: [],
+  input_functions: {
+    x2: true
+  },
   karpathy: true,
   timer: null
 };
@@ -86,7 +88,7 @@ let svm_poly_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: [],
+  input_functions: {},
   karpathy: true,
   timer: null
 };
@@ -104,7 +106,7 @@ let svm_rbf_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: [],
+  input_functions: {},
   karpathy: true,
   timer: null
 };
@@ -252,7 +254,7 @@ slider.min = 10;
 slider.max = 300;
 slider.step = 10;
 slider.addEventListener("change", () => {
-  N = slider.value; 
+  N = slider.value;
   label_slider.innerHTML = "N:" + N;
 });
 document.getElementById("datasets").appendChild(label_slider);

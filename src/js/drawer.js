@@ -89,7 +89,7 @@ drawer.prototype = {
   setOptions: function(options) {
     this.options = options || {};
   },
-  draw: function(points, labels) {
+  draw: function(points, labels, dimension = 2) {
     //clear
     this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
     //draw grid
@@ -97,22 +97,22 @@ drawer.prototype = {
     //draw axes
     this.drawAxes();
     //draw data points
-    this.drawPoints(points, labels);
+    if (dimension === 2)
+      //dimension check
+      this.draw2dPoints(points, labels);
+    else this.draw3dPoints(points, labels);
   },
   drawGrid: function() {
     //draw screen
     for (let x = 0.0; x <= this.WIDTH; x += this.options.density) {
       for (let y = 0.0; y <= this.HEIGHT; y += this.options.density) {
-        let predicted_class = this.algorithm.predictClass([
-          (x - this.WIDTH / 2) / this.options.ss,
-          (y - this.HEIGHT / 2) / this.options.ss
-        ]);
+        let X = (x - this.WIDTH / 2) / this.options.ss;
+        let Y = (y - this.HEIGHT / 2) / this.options.ss;
+        let point = [X, Y];
+        let predicted_class = this.algorithm.predictClass(point);
         let predicted_value = 0;
         if (this.options.margin.soft)
-          predicted_value = this.algorithm.predict([
-            (x - this.WIDTH / 2) / this.options.ss,
-            (y - this.HEIGHT / 2) / this.options.ss
-          ]);
+          predicted_value = this.algorithm.predict(point);
         else predicted_value = predicted_class;
         this.ctx.fillStyle = getColor(predicted_value, predicted_class);
         this.ctx.fillRect(
@@ -134,7 +134,7 @@ drawer.prototype = {
     this.ctx.lineTo(this.WIDTH / 2, this.HEIGHT);
     this.ctx.stroke();
   },
-  drawPoints: function(points, labels) {
+  draw2dPoints: function(points, labels) {
     let radius = this.options.data_radius || 6;
     for (let i = 0; i < points.length; i++) {
       let prediction = this.algorithm.predictClass(points[i]);
@@ -145,6 +145,9 @@ drawer.prototype = {
         radius
       );
     }
+  },
+  draw3dPoints: function(points, labels) {
+    //eccher work
   },
   drawTestPoints: function(points, labels) {
     let radius = this.options.test_radius || 4;

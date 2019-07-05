@@ -1,5 +1,6 @@
 import {linearKernel,makePolyKernel,makeRbfKernel,makeSigmoidKernel} from './kernels.js';
 import * as utils from './utils.js';
+import * as input_f from './input';
 let svm_id=0;
 export const SVM = function() {
     this.svm_id = svm_id;
@@ -58,6 +59,114 @@ SVM.prototype = {
                     checked: this.kernelType === "rbf",
                     disabled: true
                 }
+            },
+            input_functions:{
+                group:"input_functions",
+                x2: {
+                    id:"x2",
+                    type:"checkbox",
+                    value: "x2",
+                    name: "input_functions"+this.svm_id,
+                    checked: true
+                },
+                y2: {
+                    id:"y2",
+                    type:"checkbox",
+                    value: "y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x3: {
+                    id:"x3",
+                    type:"checkbox",
+                    value: "x3",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                y3: {
+                    id:"y3",
+                    type:"checkbox",
+                    value: "y3",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x2y2: {
+                    id:"x2y2",
+                    type:"checkbox",
+                    value: "x2y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x2_y2: {
+                    id:"x2_y2",
+                    type:"checkbox",
+                    value: "x2_y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                xy: {
+                    id:"xy",
+                    type:"checkbox",
+                    value: "xy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinx: {
+                    id:"sinx",
+                    type:"checkbox",
+                    value: "sinx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                siny: {
+                    id:"siny",
+                    type:"checkbox",
+                    value: "siny",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                cosx: {
+                    id:"cosx",
+                    type:"checkbox",
+                    value: "cosx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                cosy: {
+                    id:"cosy",
+                    type:"checkbox",
+                    value: "cosy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinxcosy: {
+                    id:"sinxcosy",
+                    type:"checkbox",
+                    value: "sinxcosy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinycosx: {
+                    id:"sinycosx",
+                    type:"checkbox",
+                    value: "sinycosx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinxcosydot: {
+                    id:"sinxcosydot",
+                    type:"checkbox",
+                    value: "sinxcosydot",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinycosxdot: {
+                    id:"sinycosxdot",
+                    type:"checkbox",
+                    value: "sinycosxdot",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
             }
         };
         if(this.kernelType === "linear"){
@@ -127,10 +236,15 @@ SVM.prototype = {
                     if(kernelType === "linear") {
                         this.kernelType = "linear";
                         kernel = linearKernel;
-                        let input_functions = options.input_functions || null;
                         this.input_transformation = false;
+                        let input_functions = [];
+                        
+                        for (let d in options.input_functions) 
+                            if (options.input_functions[d])  input_functions.push(input_f.selectFunction(d));
+
                         if (input_functions !== null && input_functions.length > 0) {
                             this.input_transformation = true;
+                            this.input_functions = input_functions;
                             let app = utils.copyArray(this.data);
                             for (let i = 0; i < this.data.length; i++) {
                                 let input_f = (function () {
@@ -495,11 +609,21 @@ SVM.prototype = {
         },
 
         predictClass: function(inst) {
+            if(this.input_transformation){
+                for(let i=0;i<this.input_functions.length;i++){
+                    inst = this.input_functions[i](inst);
+                }
+            }
             return this.marginOne(inst) >= 0 ? 1:-1;
         },
 
         predict:  function(inst){
-        return ((Math.tanh(this.marginOne(inst)))+1)/2;
+            if(this.input_transformation){
+                for(let i=0;i<this.input_functions.length;i++){
+                    inst = this.input_functions[i](inst);
+                }
+            }
+            return ((Math.tanh(this.marginOne(inst)))+1)/2;
         },
 
         // data is an NxD array. Returns array of margins.
