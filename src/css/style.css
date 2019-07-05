@@ -42,3 +42,9 @@ p {
 }
 
 /** UI classes end */
+
+#go {
+  position: fixed;
+  bottom: 100px;
+  right: 100px;
+}

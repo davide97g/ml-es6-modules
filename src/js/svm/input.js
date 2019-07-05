@@ -81,7 +81,7 @@ export function selectFunction(id) {
   else if (id === "y2") return fy2;
   else if (id === "x3") return fx3;
   else if (id === "y3") return fy3;
-  else if (id === "x2y2") return x2y2;
+  else if (id === "x2y2") return fx2y2;
   else if (id === "x2_y2") return fx2_y2;
   else if (id === "xy") return fxy;
   else if (id === "sinx") return fsinx;
@@ -92,4 +92,5 @@ export function selectFunction(id) {
   else if (id === "sinycosx") return fsinycosx;
   else if (id === "sinxcosydot") return fsinxcosydot;
   else if (id === "sinycosxdot") return fsinycosxdot;
+  else console.info("ahi");
 }

@@ -17,6 +17,10 @@ Manager.prototype = {
       drawer.draw(this.data, this.labels);
     });
   },
+  notify: function(drawer) {
+    drawer.getAlgorithm().train(this.data, this.labels);
+    drawer.draw(this.data, this.labels);
+  },
   setDataSet: function(data, labels) {
     this.data = data;
     this.labels = labels;

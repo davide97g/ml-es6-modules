@@ -59,8 +59,11 @@ SVM.prototype = {
                     checked: this.kernelType === "rbf",
                     disabled: true
                 }
-            },
-            input_functions:{
+            }
+        };
+        if(this.kernelType === "linear"){
+            options.group = "svm linear";
+            options.input_functions = {
                 group:"input_functions",
                 x2: {
                     id:"x2",
@@ -166,11 +169,8 @@ SVM.prototype = {
                     value: "sinycosxdot",
                     name: "input_functions"+this.svm_id,
                     checked: false
-                },
+                }
             }
-        };
-        if(this.kernelType === "linear"){
-            options.group = "svm linear";
         }
         else if(this.kernelType === "poly"){
             options.group = "svm poly";

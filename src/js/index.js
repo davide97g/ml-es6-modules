@@ -88,7 +88,6 @@ let svm_poly_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: {},
   karpathy: true,
   timer: null
 };
@@ -106,7 +105,6 @@ let svm_rbf_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: {},
   karpathy: true,
   timer: null
 };
@@ -234,11 +232,17 @@ drawers.push(
   })
 );
 
+document.getElementById("go").addEventListener("click", () => {
+  ui.setAllOptions();
+  manager.notifyAll();
+});
+
 let btns = document.getElementsByClassName("execute");
 for (let i = 0; i < btns.length; i++) {
+  console.info(btns[i].parent);
   btns[i].addEventListener("click", () => {
-    ui.setAllOptions();
-    manager.notifyAll();
+    ui.setOptionsOfSet(drawers[i]);
+    manager.notify(drawers[i]);
   });
 }
 
