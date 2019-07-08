@@ -68,9 +68,7 @@ let svm_linear_options = {
   SSCA: false,
   UB: 0.5,
   memoize: true,
-  input_functions: {
-    x2: true
-  },
+  input_functions: {},
   karpathy: true,
   timer: null
 };
@@ -239,7 +237,6 @@ document.getElementById("go").addEventListener("click", () => {
 
 let btns = document.getElementsByClassName("execute");
 for (let i = 0; i < btns.length; i++) {
-  console.info(btns[i].parent);
   btns[i].addEventListener("click", () => {
     ui.setOptionsOfSet(drawers[i]);
     manager.notify(drawers[i]);

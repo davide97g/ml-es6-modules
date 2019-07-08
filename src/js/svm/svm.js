@@ -70,7 +70,7 @@ SVM.prototype = {
                     type:"checkbox",
                     value: "x2",
                     name: "input_functions"+this.svm_id,
-                    checked: true
+                    checked: false
                 },
                 y2: {
                     id:"y2",

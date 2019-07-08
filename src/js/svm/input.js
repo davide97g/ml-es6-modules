@@ -1,4 +1,4 @@
-import { copyArray } from "../utils";
+import { copyArray } from "./utils";
 
 export function fx2(v) {
   let res = copyArray(v);
@@ -92,5 +92,4 @@ export function selectFunction(id) {
   else if (id === "sinycosx") return fsinycosx;
   else if (id === "sinxcosydot") return fsinxcosydot;
   else if (id === "sinycosxdot") return fsinycosxdot;
-  else console.info("ahi");
 }

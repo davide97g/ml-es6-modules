@@ -44,7 +44,7 @@
             <div class="column is-3" id="sidebarNav">
                 <div class="sidebar">
                     <nav>
-                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#Distances">Distances</a></li></ul></div>
+                        <h2><a href="index.html">Home</a></h2><div class="category"><h3>Global</h3><ul><li><a href="global.html#Distances">Distances</a></li><li><a href="global.html#UI">UI</a></li></ul></div>
                     </nav>
                 </div>
             </div>
@@ -64,12 +64,204 @@
         <article>
             <pre class="prettyprint source linenums"><code>import {linearKernel,makePolyKernel,makeRbfKernel,makeSigmoidKernel} from './kernels.js';
 import * as utils from './utils.js';
-
-export const SVM = function() {};
-
+import * as input_f from './input';
+let svm_id=0;
+export const SVM = function() {
+    this.svm_id = svm_id;
+    svm_id++;
+};
 SVM.prototype = {
 
-        train: function(data, labels, options) {
+    setOptions: function(options) {
+        this.options = options;
+      },
+
+    getOptions: function(){
+        let options = {
+            group:"svm",
+            C: {
+                id:"C",
+                type: "range",
+                min: 0,
+                max: 2,
+                step: 0.1,
+                value: this.C
+            },
+            karpathy:{
+                id:"karpathy",
+                type:"checkbox",
+                checked: true
+            },
+            memoize:{
+                id:"memoize",
+                type:"checkbox",
+                checked: true
+            },
+            kernel:{
+                group:"kernel",
+                linear:{
+                    id:"linear",
+                    type:"radio",
+                    value:"linear",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "linear",
+                    disabled: true
+                },
+                poly: {
+                    id:"poly",
+                    type:"radio",
+                    value:"poly",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "poly",
+                    disabled: true
+                },
+                rbf:{
+                    id:"rbf",
+                    type:"radio",
+                    value:"rbf",
+                    name:"kernel"+this.svm_id,
+                    checked: this.kernelType === "rbf",
+                    disabled: true
+                }
+            }
+        };
+        if(this.kernelType === "linear"){
+            options.group = "svm linear";
+            options.input_functions = {
+                group:"input_functions",
+                x2: {
+                    id:"x2",
+                    type:"checkbox",
+                    value: "x2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                y2: {
+                    id:"y2",
+                    type:"checkbox",
+                    value: "y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x3: {
+                    id:"x3",
+                    type:"checkbox",
+                    value: "x3",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                y3: {
+                    id:"y3",
+                    type:"checkbox",
+                    value: "y3",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x2y2: {
+                    id:"x2y2",
+                    type:"checkbox",
+                    value: "x2y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                x2_y2: {
+                    id:"x2_y2",
+                    type:"checkbox",
+                    value: "x2_y2",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                xy: {
+                    id:"xy",
+                    type:"checkbox",
+                    value: "xy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinx: {
+                    id:"sinx",
+                    type:"checkbox",
+                    value: "sinx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                siny: {
+                    id:"siny",
+                    type:"checkbox",
+                    value: "siny",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                cosx: {
+                    id:"cosx",
+                    type:"checkbox",
+                    value: "cosx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                cosy: {
+                    id:"cosy",
+                    type:"checkbox",
+                    value: "cosy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinxcosy: {
+                    id:"sinxcosy",
+                    type:"checkbox",
+                    value: "sinxcosy",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinycosx: {
+                    id:"sinycosx",
+                    type:"checkbox",
+                    value: "sinycosx",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinxcosydot: {
+                    id:"sinxcosydot",
+                    type:"checkbox",
+                    value: "sinxcosydot",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                },
+                sinycosxdot: {
+                    id:"sinycosxdot",
+                    type:"checkbox",
+                    value: "sinycosxdot",
+                    name: "input_functions"+this.svm_id,
+                    checked: false
+                }
+            }
+        }
+        else if(this.kernelType === "poly"){
+            options.group = "svm poly";
+            options.degree = {
+                id:"degree",
+                type: "range",
+                min: 2,
+                max: 5,
+                step: 1,
+                value: this.degree
+            };
+        }
+        else if(this.kernelType === "rbf"){
+            options.group = "svm rbf";
+            options.rbfSigma = {
+                id:"rbfSigma",
+                type: "range",
+                min: 0,
+                max: 1,
+                step: 0.1,
+                value: this.rbfSigma
+            };
+        }
+        return options;
+    },
+
+        train: function(data, labels) {
             let t0 = performance.now();
             this.t0 = t0;
 
@@ -77,7 +269,9 @@ SVM.prototype = {
             this.labels = labels;
 
             // parameters
-            options = options || {};
+            // options = options || {};
+            this.options = this.options || {};
+            let options = this.options;
             let C = options.C || 1.0; // C value. Decrease for more regularization
             let tol = options.tol || 1e-4; // numerical tolerance. Don't touch unless you're pro
             let alphatol = options.alphatol || 0; // non-support vectors for space and time efficiency are truncated. To guarantee correct result set this to 0 to do no truncating. If you want to increase efficiency, experiment with setting this little higher, up to maybe 1e-4 or so.
@@ -96,15 +290,25 @@ SVM.prototype = {
             // instantiate kernel according to options. kernel can be given as string or as a custom function
             let kernel = linearKernel;
             this.kernelType = "linear";
+            let kernelType = "linear";
+            for (let d in this.options.kernel) {
+                if (this.options.kernel[d]) kernelType = d;
+              }
             if("kernel" in options) {
-                if(typeof options.kernel === "string") {
+                if(typeof kernelType === "string") {
                     // kernel was specified as a string. Handle these special cases appropriately
-                    if(options.kernel === "linear") {
+                    if(kernelType === "linear") {
                         this.kernelType = "linear";
-                        kernel = linearKernel;let input_functions = options.input_functions || null;
+                        kernel = linearKernel;
                         this.input_transformation = false;
+                        let input_functions = [];
+                        
+                        for (let d in options.input_functions) 
+                            if (options.input_functions[d])  input_functions.push(input_f.selectFunction(d));
+
                         if (input_functions !== null &amp;&amp; input_functions.length > 0) {
                             this.input_transformation = true;
+                            this.input_functions = input_functions;
                             let app = utils.copyArray(this.data);
                             for (let i = 0; i &lt; this.data.length; i++) {
                                 let input_f = (function () {
@@ -117,13 +321,13 @@ SVM.prototype = {
                             this.data = app;
                         }
                     }
-                    if(options.kernel === "rbf") {
+                    if(kernelType === "rbf") {
                         let rbfSigma = options.rbfsigma || 0.5;
                         this.rbfSigma = rbfSigma; // back this up
                         this.kernelType = "rbf";
                         kernel = makeRbfKernel(rbfSigma);
                     }
-                    if(options.kernel === "poly"){
+                    if(kernelType === "poly"){
                         let degree = options.degree || 2;
                         this.degree = degree;
                         let influence = options.influence || 1;
@@ -133,7 +337,7 @@ SVM.prototype = {
                         this.kernelType = "poly";
                         kernel = makePolyKernel(degree, influence);
                     }
-                    if(options.kernel === "sigm"){
+                    if(kernelType === "sigm"){
                         let influence = options.influence || 1;
                         if(influence&lt;0) //cannot be negative
                             influence = 0; //setting to zero
@@ -191,6 +395,7 @@ SVM.prototype = {
                     this.karpathySMO();
                     this.store();
                     let t1 = performance.now();
+                    // console.info(t1-t0);
                     return t1-t0;
                 }
             }
@@ -206,6 +411,7 @@ SVM.prototype = {
                 }
                 this.store();
                 let t1 = performance.now();
+                // console.info(t1-t0);
                 return t1-t0;
             }
 
@@ -244,7 +450,6 @@ SVM.prototype = {
                         for (let i = 0; i &lt; weights.length; i++)
                             drawIntermidiate(this.ctx, weights[i]);
                     }
-                    console.info( "🐧 TRAIN end");
                 }
             }, updateFrequency);
         },
@@ -468,11 +673,21 @@ SVM.prototype = {
         },
 
         predictClass: function(inst) {
+            if(this.input_transformation){
+                for(let i=0;i&lt;this.input_functions.length;i++){
+                    inst = this.input_functions[i](inst);
+                }
+            }
             return this.marginOne(inst) >= 0 ? 1:-1;
         },
 
         predict:  function(inst){
-        return ((Math.tanh(this.marginOne(inst)))+1)/2;
+            if(this.input_transformation){
+                for(let i=0;i&lt;this.input_functions.length;i++){
+                    inst = this.input_functions[i](inst);
+                }
+            }
+            return ((Math.tanh(this.marginOne(inst)))+1)/2;
         },
 
         // data is an NxD array. Returns array of margins.
@@ -834,7 +1049,7 @@ SVM.prototype = {
             statistics.iters = iter;
             */
 
-            this.ROC();
+            // this.ROC();
 
             //this.check();
 
@@ -1101,7 +1316,7 @@ SVM.prototype = {
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Tue Jul 02 2019 17:20:09 GMT+0200 (GMT+02:00)</p>
+        <p>Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.2</a> on Mon Jul 08 2019 09:13:25 GMT+0200 (GMT+02:00)</p>
         <p class="sidebar-created-by">
             <a href="https://github.com/SoftwareBrothers/better-docs" target="_blank">BetterDocs theme</a> provided with <i class="fas fa-heart"></i> by 
             <a href="http://softwarebrothers.co" target="_blank">SoftwareBrothers</a>
