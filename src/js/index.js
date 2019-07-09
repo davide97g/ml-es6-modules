@@ -3,7 +3,7 @@ import { SVM } from "./svm/svm";
 import { KNN } from "./knn/knn";
 import { RBF } from "./rbf/rbf";
 import { RandomForest as RANDF } from "./randf/randf";
-import { drawer, master_drawer } from "./drawer";
+import { drawer} from "./drawer";
 import { NeuralNet } from "./nn/nn";
 import { Manager } from "./manager";
 import { UI } from "./ui";
@@ -11,33 +11,6 @@ import { dataset_generator } from "./dataset";
 
 let manager = new Manager();
 let generator = new dataset_generator();
-
-// let radioXY = document.getElementById("xy");
-// radioXY.addEventListener("click", () => {
-//   data = selectPredictors(multi, 0, 1);
-//   drawers.forEach(drawer => drawer.draw(data, labels));
-// });
-
-// let radioYZ = document.getElementById("yz");
-// radioYZ.addEventListener("click", () => {
-//   data = selectPredictors(multi, 1, 2);
-//   drawers.forEach(drawer => drawer.draw(data, labels));
-// });
-
-// let radioXZ = document.getElementById("xz");
-// radioXZ.addEventListener("click", () => {
-//   data = selectPredictors(multi, 0, 2);
-//   drawers.forEach(drawer => drawer.draw(data, labels));
-// });
-
-// let MARGIN = document.getElementById("margin");
-// MARGIN.addEventListener("click", () => {
-//   let margin;
-//   if (MARGIN.checked) margin = "soft";
-//   else margin = "hard";
-//   drawers.forEach(drawer => drawer.setOptions({ margin: margin }));
-//   drawers.forEach(drawer => drawer.draw(data, labels));
-// });
 
 let multi = [
   [1, 0, 2],
@@ -177,7 +150,8 @@ drawers.push(
   new drawer(svm_linear, document.getElementById("svm-linear-canvas"), {
     margin: {
       soft: true
-    }
+    },
+    boosted: true
   })
 );
 drawers.push(
@@ -289,6 +263,8 @@ ui.createOptionsFrom(nn, document.getElementById("nn-options"));
 ui.createOptionsFrom(drawers[7], document.getElementById("nn-options"));
 
 drawers.forEach(drawer => manager.subscribe(drawer));
+// manager.subscribe(drawers[0]);
+// manager.subscribe(drawers[1]);
 manager.notifyAll();
 
 //_______________

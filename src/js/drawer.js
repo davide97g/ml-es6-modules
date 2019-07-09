@@ -1,6 +1,6 @@
+import * as input_f from "./svm/input";
 let id = 1;
 export const drawer = function(algorithm, canvas, options) {
-  // this.id = 0;
   this.id = id;
   id++;
   this.algorithm = algorithm;
@@ -73,9 +73,138 @@ drawer.prototype = {
         max: 10,
         step: 1,
         value: 3
+      },
+      boosted: {
+        id: "boosted",
+        type: "checkbox",
+        value: "boosted",
+        checked: this.options.boosted,
+        disabled: true
       }
     };
+    if (this.options.boosted) {
+      options.input_functions = {
+        group: "input_functions",
+        x2: {
+          id: "x2",
+          type: "checkbox",
+          value: "x2",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        y2: {
+          id: "y2",
+          type: "checkbox",
+          value: "y2",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        x3: {
+          id: "x3",
+          type: "checkbox",
+          value: "x3",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        y3: {
+          id: "y3",
+          type: "checkbox",
+          value: "y3",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        x2y2: {
+          id: "x2y2",
+          type: "checkbox",
+          value: "x2y2",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        x2_y2: {
+          id: "x2_y2",
+          type: "checkbox",
+          value: "x2_y2",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        xy: {
+          id: "xy",
+          type: "checkbox",
+          value: "xy",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        sinx: {
+          id: "sinx",
+          type: "checkbox",
+          value: "sinx",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        siny: {
+          id: "siny",
+          type: "checkbox",
+          value: "siny",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        cosx: {
+          id: "cosx",
+          type: "checkbox",
+          value: "cosx",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        cosy: {
+          id: "cosy",
+          type: "checkbox",
+          value: "cosy",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        sinxcosy: {
+          id: "sinxcosy",
+          type: "checkbox",
+          value: "sinxcosy",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        sinycosx: {
+          id: "sinycosx",
+          type: "checkbox",
+          value: "sinycosx",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        sinxcosydot: {
+          id: "sinxcosydot",
+          type: "checkbox",
+          value: "sinxcosydot",
+          name: "input_functions" + this.id,
+          checked: false
+        },
+        sinycosxdot: {
+          id: "sinycosxdot",
+          type: "checkbox",
+          value: "sinycosxdot",
+          name: "input_functions" + this.id,
+          checked: false
+        }
+      };
+    }
     return options;
+  },
+  setOptions: function(options) {
+    this.options = options || {};
+  },
+  getBoosting: function() {
+    if (this.options.boosted) {
+      let input_functions = [];
+      for (let i in this.options.input_functions)
+        if (this.options.input_functions[i])
+          input_functions.push(input_f.selectFunction(i));
+      return input_functions;
+    } else return [];
   },
   setManager: function(manager) {
     this.manager = manager;
@@ -86,10 +215,8 @@ drawer.prototype = {
   getAlgorithm: function() {
     return this.algorithm;
   },
-  setOptions: function(options) {
-    this.options = options || {};
-  },
   draw: function(points, labels, dimension = 2) {
+    //dimension check
     if (dimension === 2) {
       //clear
       this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
@@ -98,22 +225,26 @@ drawer.prototype = {
       //draw axes
       this.drawAxes();
       //draw data points
-      //dimension check
       this.draw2dPoints(points, labels);
     } else this.draw3dPoints(points, labels);
   },
   drawGrid: function() {
     //draw screen
+    let boosting = [];
+    if (this.options.boosted) {
+      boosting = this.getBoosting();
+    }
     for (let x = 0.0; x <= this.WIDTH; x += this.options.density) {
       for (let y = 0.0; y <= this.HEIGHT; y += this.options.density) {
         let X = (x - this.WIDTH / 2) / this.options.ss;
         let Y = (y - this.HEIGHT / 2) / this.options.ss;
-        let point = [X, Y];
+        let point = this.manager.boost(boosting, [X, Y]);
         let predicted_class = this.algorithm.predictClass(point);
         let predicted_value = 0;
         if (this.options.margin.soft)
           predicted_value = this.algorithm.predict(point);
         else predicted_value = predicted_class;
+
         this.ctx.fillStyle = getColor(predicted_value, predicted_class);
         this.ctx.fillRect(
           x - this.options.density / 2 - 1,
@@ -136,8 +267,14 @@ drawer.prototype = {
   },
   draw2dPoints: function(points, labels) {
     let radius = this.options.data_radius || 6;
+    let boosting = [];
+    if (this.options.boosted) {
+      boosting = this.getBoosting();
+    }
     for (let i = 0; i < points.length; i++) {
-      let prediction = this.algorithm.predictClass(points[i]);
+      let prediction = this.algorithm.predictClass(
+        this.manager.boost(boosting, points[i])
+      );
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
         points[i][0] * this.options.ss + this.WIDTH / 2,
@@ -152,7 +289,9 @@ drawer.prototype = {
   drawTestPoints: function(points, labels) {
     let radius = this.options.test_radius || 4;
     for (let i = 0; i < points.length; i++) {
-      let prediction = this.algorithm.predictClass(points[i]);
+      let prediction = this.algorithm.predictClass(
+        this.manager.boost(points[i])
+      );
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
         points[i][0] * this.options.ss + this.WIDTH / 2,
