@@ -215,18 +215,15 @@ drawer.prototype = {
   getAlgorithm: function() {
     return this.algorithm;
   },
-  draw: function(points, labels, dimension = 2) {
-    //dimension check
-    if (dimension === 2) {
-      //clear
-      this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
-      //draw grid
-      this.drawGrid();
-      //draw axes
-      this.drawAxes();
-      //draw data points
-      this.draw2dPoints(points, labels);
-    } else this.draw3dPoints(points, labels);
+  draw: function(points, label) {
+    //clear
+    this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+    //draw grid
+    this.drawGrid();
+    //draw axes
+    this.drawAxes();
+    //draw data points
+    this.draw2dPoints(points, labels);
   },
   drawGrid: function() {
     //draw screen
