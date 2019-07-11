@@ -47,5 +47,6 @@ Manager.prototype = {
       }
     }
     this.data.splice(index, 1);
+    this.labels.splice(index, 1);
   }
 };

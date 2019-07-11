@@ -3,11 +3,10 @@ let id = 1;
 export const drawer = function(algorithm, canvas, options) {
   this.id = id++;
   this.algorithm = algorithm;
+  this.canvas = canvas;
   this.ctx = canvas.getContext("2d");
   if (this.ctx) {
-    canvas.addEventListener("click", e =>
-      this.mouseClick(eventClick(canvas, e))
-    );
+    canvas.addEventListener("click", e => this.mouseClick(this.eventClick(e)));
     this.options = options || {
       margin: {
         soft: true
@@ -298,35 +297,30 @@ drawer.prototype = {
     this.ctx.fill();
   },
   mouseClick: function({ x, y, shiftPressed, ctrlPressed }) {
-    let data = [
+    let point = [
       (x - this.WIDTH / 2) / this.options.ss,
       (y - this.HEIGHT / 2) / this.options.ss
     ];
-    if (ctrlPressed) {
-      console.info(ctrlPressed);
-      this.manager.removePoint(data);
-    } else {
+    if (ctrlPressed) this.manager.removePoint(point);
+    else {
       let label = shiftPressed ? 1 : -1;
-      // store point
-      this.manager.addPoint(data, label);
+      this.manager.addPoint(point, label);
     }
-    // draw all
     this.manager.notifyAll();
+  },
+  eventClick: function(e) {
+    //get position of cursor relative to top left of canvas
+    let x = 0;
+    let y = 0;
+    if (e.pageX || e.pageY) {
+      x = e.pageX;
+      y = e.pageY;
+    }
+    x -= this.canvas.offsetLeft;
+    y -= this.canvas.offsetTop;
+    return { x: x, y: y, shiftPressed: e.shiftKey, ctrlPressed: e.ctrlKey };
   }
 };
-
-function eventClick(canvas, e) {
-  //get position of cursor relative to top left of canvas
-  let x = 0;
-  let y = 0;
-  if (e.pageX || e.pageY) {
-    x = e.pageX;
-    y = e.pageY;
-  }
-  x -= canvas.offsetLeft;
-  y -= canvas.offsetTop;
-  return { x: x, y: y, shiftPressed: e.shiftKey, ctrlPressed: e.ctrlKey };
-}
 
 function getPointColor(predicted, real) {
   if (predicted * real > 0) {
