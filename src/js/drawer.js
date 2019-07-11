@@ -215,7 +215,7 @@ drawer.prototype = {
   getAlgorithm: function() {
     return this.algorithm;
   },
-  draw: function(points, label) {
+  draw: function(points, labels) {
     //clear
     this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
     //draw grid

@@ -4,14 +4,14 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
 
 # ml-es6-modules
-# Machine learning as ES6 modules
+## Machine learning as ES6 modules
 
-Some test with machine learning algorithms, es6 modules and webpack.
+Browser-ready machine learning algorithms as ES6 modules.
 
-## demo
+## Demo
 A live demo is available [here](https://davide97g.github.io/ml-es6-modules/).
 
-## es6 modules
+## ES6 modules
 
 ECMAScript standard for importing and exporting features between javascript files.
 
@@ -37,7 +37,7 @@ export default DefaultFunction(){
 > - `async defer` attributes inside script tag : no need to wrap code with jquery document-ready statement
 > - `type="module"` if you want to load the script server-side (for es6 modules loading) 
 
-## algorithms
+## Algorithms
 
 - svm
   - linear
@@ -76,12 +76,16 @@ algorithm.prototype = {
 // helper functions if needed
 ```
 
-# webpack
+# Webpack
 
 A bundler for javascript code: you can use nodejs modules in the brower. All js files will be merged and transpiled into one bundle (index.bundle.js), generated into the `./dist` folder.
 
-To build the source code just run in the command line:
+To build the source code run in the command line, in the `package.json` directory:
 
+```
+npm install
+```
+Then, you have installed webpack and the project dependecies. Now you can build with:
 ```
 npm run build
 ```

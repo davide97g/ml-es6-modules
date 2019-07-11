@@ -1,20 +1,17 @@
 * {
   margin: 0;
   padding: 0;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
-
 .box {
   text-align: center;
   display: block;
   padding: 2px;
   overflow: hidden;
   margin: auto;
-}
-
-.box canvas {
-  float: left;
+  canvas {
+    float: left;
+  }
 }
 
 .drawer {
@@ -24,6 +21,7 @@
 }
 
 /** UI classes */
+
 .options {
   float: left;
 }
@@ -31,11 +29,9 @@
 .execute {
   text-align: center;
 }
-
 .title {
   font-style: italic;
 }
-
 .container {
   margin-bottom: 20px;
   width: 200px;
@@ -44,9 +40,9 @@
 }
 
 /** UI classes end */
+
 #go {
   position: fixed;
   bottom: 100px;
   right: 100px;
 }
-/*# sourceMappingURL=style.css.map */
