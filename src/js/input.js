@@ -1,82 +1,92 @@
-import { copyArray } from "./utils";
+import { copyArray } from "./utils.js";
 
-export function fx2(v) {
+function fx2(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[0], 2));
   return res;
 }
-export function fy2(v) {
+function fy2(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[1], 2));
   return res;
 }
-export function fx3(v) {
+function fx3(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[0], 3));
   return res;
 }
-export function fy3(v) {
+function fy3(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[1], 3));
   return res;
 }
-export function fx2y2(v) {
+function fx2y2(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[0], 2) + Math.pow(v[1], 2));
   return res;
 }
-export function fx2_y2(v) {
+function fx2_y2(v) {
   let res = copyArray(v);
   res.push(Math.pow(v[0], 2) - Math.pow(v[1], 2));
   return res;
 }
-export function fxy(v) {
+function fxy(v) {
   let res = copyArray(v);
   res.push(v[0] * v[1]);
   return res;
 }
-export function fsinx(v) {
+function fsinx(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[0]));
   return res;
 }
-export function fsiny(v) {
+function fsiny(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[1]));
   return res;
 }
-export function fcosx(v) {
+function fcosx(v) {
   let res = copyArray(v);
   res.push(Math.cos(v[0]));
   return res;
 }
-export function fcosy(v) {
+function fcosy(v) {
   let res = copyArray(v);
   res.push(Math.cos(v[1]));
   return res;
 }
-export function fsinxcosy(v) {
+function fsinxcosy(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[0]) + Math.cos(v[1]));
   return res;
 }
-export function fsinycosx(v) {
+function fsinycosx(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[1]) + Math.cos(v[0]));
   return res;
 }
-export function fsinxcosydot(v) {
+function fsinxcosydot(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[0]) * Math.cos(v[1]));
   return res;
 }
-export function fsinycosxdot(v) {
+function fsinycosxdot(v) {
   let res = copyArray(v);
   res.push(Math.sin(v[1]) * Math.cos(v[0]));
   return res;
 }
 
-export function selectFunction(id) {
+export function boost(input_boosting, point) {
+  if (input_boosting.length > 0) {
+    let boosted = copyArray(point);
+    for (let i = 0; i < input_boosting.length; i++) {
+      boosted = input_boosting[i](boosted);
+    }
+    return boosted;
+  } else return point;
+}
+
+export function getFunction(id) {
   if (id === "x2") return fx2;
   else if (id === "y2") return fy2;
   else if (id === "x3") return fx3;

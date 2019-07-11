@@ -116,6 +116,6 @@ KNN.prototype = {
     return options;
   },
   setOptions: function(options) {
-    this.options = options;    
+    this.options = options;
   }
 };

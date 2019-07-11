@@ -1,4 +1,5 @@
-import { copyArray } from "./utils";
+import { copyArray } from "./utils.js";
+import { boost } from "./input.js";
 export const Manager = function() {
   this.data = [];
   this.labels = [];
@@ -17,7 +18,7 @@ Manager.prototype = {
     if (input_boosting.length > 0) {
       let boosted = copyArray(this.data);
       for (let i = 0; i < boosted.length; i++)
-        boosted[i] = this.boost(input_boosting, this.data[i]);
+        boosted[i] = boost(input_boosting, this.data[i]);
       drawer.getAlgorithm().train(boosted, this.labels);
       drawer.draw(boosted, this.labels);
     } else {
@@ -33,13 +34,18 @@ Manager.prototype = {
     this.data.push(point);
     this.labels.push(label);
   },
-  boost: function(input_boosting, point) {
-    if (input_boosting.length) {
-      let boosted = copyArray(point);
-      for (let i = 0; i < input_boosting.length; i++) {
-        boosted = input_boosting[i](boosted);
+  removePoint: function(point) {
+    let index = 0;
+    let distanceFrom = ([x1, y1], [x2, y2]) =>
+      Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    let min = distanceFrom(this.data[0], point);
+    for (let i = 0; i < this.data.length; i++) {
+      let d = distanceFrom(this.data[i], point);
+      if (d < min) {
+        min = d;
+        index = i;
       }
-      return boosted;
-    } else return point;
+    }
+    this.data.splice(index, 1);
   }
 };

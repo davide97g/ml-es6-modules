@@ -1,24 +1,25 @@
-import * as input_f from "./svm/input";
+import { getFunction, boost } from "./input.js";
 let id = 1;
 export const drawer = function(algorithm, canvas, options) {
-  this.id = id;
-  id++;
+  this.id = id++;
   this.algorithm = algorithm;
   this.ctx = canvas.getContext("2d");
-  canvas.addEventListener("click", e => this.mouseClick(eventClick(canvas, e)));
-  this.WIDTH = canvas.width;
-  this.HEIGHT = canvas.height;
-  this.options = options || {
-    margin: {
-      soft: true
-    },
-    data_radius: 6,
-    test_radius: 4
-  };
-  this.options.WIDTH = this.WIDTH;
-  this.options.HEIGHT = this.HEIGHT;
-  this.options.ss = this.options.ss || 20;
-  this.options.density = this.options.density || 3;
+  if (this.ctx) {
+    canvas.addEventListener("click", e =>
+      this.mouseClick(eventClick(canvas, e))
+    );
+    this.options = options || {
+      margin: {
+        soft: true
+      },
+      data_radius: 6,
+      test_radius: 4
+    };
+    this.WIDTH = canvas.width;
+    this.HEIGHT = canvas.height;
+    this.options.ss = this.options.ss || 20;
+    this.options.density = this.options.density || 3;
+  } else console.warn("Could not get context from canvas: " + canvas);
 };
 
 drawer.prototype = {
@@ -202,7 +203,7 @@ drawer.prototype = {
       let input_functions = [];
       for (let i in this.options.input_functions)
         if (this.options.input_functions[i])
-          input_functions.push(input_f.selectFunction(i));
+          input_functions.push(getFunction(i));
       return input_functions;
     } else return [];
   },
@@ -223,10 +224,9 @@ drawer.prototype = {
     //draw axes
     this.drawAxes();
     //draw data points
-    this.draw2dPoints(points, labels);
+    this.drawDataPoints(points, labels);
   },
   drawGrid: function() {
-    //draw screen
     let boosting = [];
     if (this.options.boosted) {
       boosting = this.getBoosting();
@@ -235,7 +235,7 @@ drawer.prototype = {
       for (let y = 0.0; y <= this.HEIGHT; y += this.options.density) {
         let X = (x - this.WIDTH / 2) / this.options.ss;
         let Y = (y - this.HEIGHT / 2) / this.options.ss;
-        let point = this.manager.boost(boosting, [X, Y]);
+        let point = boost(boosting, [X, Y]);
         let predicted_class = this.algorithm.predictClass(point);
         let predicted_value = 0;
         if (this.options.margin.soft)
@@ -262,16 +262,14 @@ drawer.prototype = {
     this.ctx.lineTo(this.WIDTH / 2, this.HEIGHT);
     this.ctx.stroke();
   },
-  draw2dPoints: function(points, labels) {
+  drawDataPoints: function(points, labels) {
     let radius = this.options.data_radius || 6;
     let boosting = [];
     if (this.options.boosted) {
       boosting = this.getBoosting();
     }
     for (let i = 0; i < points.length; i++) {
-      let prediction = this.algorithm.predictClass(
-        this.manager.boost(boosting, points[i])
-      );
+      let prediction = this.algorithm.predictClass(boost(boosting, points[i]));
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
         points[i][0] * this.options.ss + this.WIDTH / 2,
@@ -279,16 +277,11 @@ drawer.prototype = {
         radius
       );
     }
-  },
-  draw3dPoints: function(points, labels) {
-    //eccher work
   },
   drawTestPoints: function(points, labels) {
     let radius = this.options.test_radius || 4;
     for (let i = 0; i < points.length; i++) {
-      let prediction = this.algorithm.predictClass(
-        this.manager.boost(points[i])
-      );
+      let prediction = this.algorithm.predictClass(boost(points[i]));
       this.ctx.fillStyle = getPointColor(prediction, labels[i]);
       this.drawCircle(
         points[i][0] * this.options.ss + this.WIDTH / 2,
@@ -304,67 +297,21 @@ drawer.prototype = {
     this.ctx.stroke();
     this.ctx.fill();
   },
-  mouseClick: function({ x, y, shiftPressed }) {
+  mouseClick: function({ x, y, shiftPressed, ctrlPressed }) {
     let data = [
       (x - this.WIDTH / 2) / this.options.ss,
       (y - this.HEIGHT / 2) / this.options.ss
     ];
-    let label = shiftPressed ? 1 : -1;
-    // store point
-    this.manager.addPoint(data, label);
+    if (ctrlPressed) {
+      console.info(ctrlPressed);
+      this.manager.removePoint(data);
+    } else {
+      let label = shiftPressed ? 1 : -1;
+      // store point
+      this.manager.addPoint(data, label);
+    }
     // draw all
     this.manager.notifyAll();
-  }
-};
-
-export const master_drawer = function(canvas, callback, options) {
-  this.ctx = canvas.getContext("2d");
-  canvas.addEventListener("click", e => callback(eventClick(canvas, e)));
-  this.WIDTH = canvas.width;
-  this.HEIGHT = canvas.height;
-  this.options = options || {};
-  this.ss = this.options.ss || 20;
-  this.density = this.options.density || 3;
-};
-
-master_drawer.prototype = {
-  draw: function(points, labels) {
-    //clear
-    this.ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
-    //draw axes
-    this.drawAxes();
-    //draw data points
-    this.drawPoints(points, labels);
-    //draw test points
-    //@TODO draw test function
-  },
-  drawAxes: function() {
-    this.ctx.beginPath();
-    this.ctx.strokeStyle = "rgb(50,50,50)";
-    this.ctx.lineWidth = 1;
-    this.ctx.moveTo(0, this.HEIGHT / 2);
-    this.ctx.lineTo(this.WIDTH, this.HEIGHT / 2);
-    this.ctx.moveTo(this.WIDTH / 2, 0);
-    this.ctx.lineTo(this.WIDTH / 2, this.HEIGHT);
-    this.ctx.stroke();
-  },
-  drawPoints: function(points, labels) {
-    let radius = 6;
-    for (let i = 0; i < points.length; i++) {
-      this.ctx.fillStyle = getPointColor(labels[i], labels[i]);
-      this.drawCircle(
-        points[i][0] * this.ss + this.WIDTH / 2,
-        points[i][1] * this.ss + this.HEIGHT / 2,
-        radius
-      );
-    }
-  },
-  drawCircle: function(x, y, r) {
-    this.ctx.beginPath();
-    this.ctx.arc(x, y, r, 0, Math.PI * 2, true);
-    this.ctx.closePath();
-    this.ctx.stroke();
-    this.ctx.fill();
   }
 };
 
@@ -391,16 +338,16 @@ function getPointColor(predicted, real) {
   }
 }
 
-function getColor(prediction, real) {
+function getColor(predicted, real) {
   let ri, gi;
-  if (prediction < 0) {
+  if (predicted < 0) {
     // less red 250-150
-    ri = 150 - 100 * prediction; //with value = -1 ===> ri = 250
-    gi = 250 + 100 * prediction; //with value = -1 ===> gi = 150
+    ri = 150 - 100 * predicted; //with value = -1 ===> ri = 250
+    gi = 250 + 100 * predicted; //with value = -1 ===> gi = 150
   } else {
     //less green 150-250
-    ri = 250 - 100 * prediction; //with value = 1 ===> ri = 150
-    gi = 150 + 100 * prediction; //with value = 1 ===> gi = 250
+    ri = 250 - 100 * predicted; //with value = 1 ===> ri = 150
+    gi = 150 + 100 * predicted; //with value = 1 ===> gi = 250
   }
   if (real > 0) gi += 5;
   else ri += 35;

@@ -1,31 +1,29 @@
-import { LogisticRegression as LOGREG } from "./logreg/logreg";
-import { SVM } from "./svm/svm";
-import { KNN } from "./knn/knn";
-import { RBF } from "./rbf/rbf";
-import { RandomForest as RANDF } from "./randf/randf";
-import { drawer} from "./drawer";
-import { NeuralNet } from "./nn/nn";
-import { Manager } from "./manager";
-import { UI } from "./ui";
-import { dataset_generator } from "./dataset";
+import { LogisticRegression as LOGREG } from "./logreg/logreg.js";
+import { SVM } from "./svm/svm.js";
+import { KNN } from "./knn/knn.js";
+import { RBF } from "./rbf/rbf.js";
+import { RandomForest as RANDF } from "./randf/randf.js";
+import { drawer } from "./drawer.js";
+import { NeuralNet } from "./nn/nn.js";
+import { Manager } from "./manager.js";
+import { UI } from "./ui.js";
+import { dataset_generator } from "./dataset.js";
 
 let manager = new Manager();
 let generator = new dataset_generator();
 
-let multi = [
-  [1, 0, 2],
-  [2, 3, 4],
-  [5, 4, 6],
-  [2, 7, 5],
-  [0, 3, 7],
-  [-1, 0, -2],
-  [-3, -4, -4],
-  [-2, -2, -1],
-  [-1, -1, -3],
-  [-5, -2, -5]
+let data = [
+  [1, 0],
+  [2, 3],
+  [5, 4],
+  [2, 7],
+  [0, 3],
+  [-1, 0],
+  [-3, -4],
+  [-2, -2],
+  [-1, -1],
+  [-5, -2]
 ];
-
-let data = selectPredictors(multi, 0, 1);
 let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
 
 manager.setDataSet(data, labels);
@@ -63,7 +61,7 @@ let svm_poly_options = {
   timer: null
 };
 svm_poly.setOptions(svm_poly_options);
-svm_poly.train(multi, labels);
+svm_poly.train(data, labels);
 
 let svm_rbf = new SVM();
 let svm_rbf_options = {
@@ -80,7 +78,7 @@ let svm_rbf_options = {
   timer: null
 };
 svm_rbf.setOptions(svm_rbf_options);
-svm_rbf.train(multi, labels);
+svm_rbf.train(data, labels);
 
 let knn = new KNN();
 let knn_options = {
@@ -93,7 +91,7 @@ let knn_options = {
   p: 1.5
 };
 knn.setOptions(knn_options);
-knn.train(multi, labels);
+knn.train(data, labels);
 
 let rbf = new RBF();
 let rbf_options = {
@@ -101,7 +99,7 @@ let rbf_options = {
   rbfSigma: 0.5
 };
 rbf.setOptions(rbf_options);
-rbf.train(multi, labels);
+rbf.train(data, labels);
 
 let randf = new RANDF();
 let randf_options = {
@@ -113,38 +111,14 @@ randf.train(data, labels);
 let logreg = new LOGREG();
 let logreg_options = {};
 logreg.setOptions(logreg_options);
-logreg.train(multi, labels);
+logreg.train(data, labels);
 
 let nn = new NeuralNet();
 let nn_options = {};
 nn.setOptions(nn_options);
-nn.train(multi, labels);
-
-// // update canvas on mouseclick
-// let mouseClick = ({ x, y, shiftPressed }) => {
-//   // store point
-//   data.push([
-//     (x - master.WIDTH / 2) / master.ss,
-//     (y - master.HEIGHT / 2) / master.ss
-//   ]);
-//   labels.push(shiftPressed ? 1 : -1);
-
-//   // draw master
-//   master.draw(data, labels);
-
-//   // train
-//   training(data, labels);
-
-//   // draw all
-//   manager.notifyAll(data, labels);
-// };
+nn.train(data, labels);
 
 let drawers = [];
-// //master canvas with mouse click event listener
-// let master_canvas = document.getElementById("draw-canvas-test");
-// let master = new master_drawer(master_canvas, mouseClick, {});
-// master.draw(data, labels);
-
 //create the other drawers
 drawers.push(
   new drawer(svm_linear, document.getElementById("svm-linear-canvas"), {
@@ -263,25 +237,4 @@ ui.createOptionsFrom(nn, document.getElementById("nn-options"));
 ui.createOptionsFrom(drawers[7], document.getElementById("nn-options"));
 
 drawers.forEach(drawer => manager.subscribe(drawer));
-// manager.subscribe(drawers[0]);
-// manager.subscribe(drawers[1]);
 manager.notifyAll();
-
-//_______________
-
-// function training(data, labels) {
-//   svm_linear.train(data, labels);
-//   svm_poly.train(data, labels);
-//   svm_rbf.train(data, labels);
-//   knn.train(data, labels);
-//   rbf.train(data, labels);
-//   randf.train(data, labels);
-//   logreg.train(data, labels);
-//   nn.train(data, labels);
-// }
-
-function selectPredictors(data, chosen1, chosen2) {
-  let predictors = [];
-  data.forEach(point => predictors.push([point[chosen1], point[chosen2]]));
-  return predictors;
-}

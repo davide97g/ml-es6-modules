@@ -1,4 +1,4 @@
-import { Net, Vol, Trainer } from "./convnet";
+import { Net, Vol, Trainer } from "./convnet.js";
 export const NeuralNet = function() {};
 NeuralNet.prototype = {
   train: function(data, labels) {

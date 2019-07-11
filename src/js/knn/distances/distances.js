@@ -1,5 +1,3 @@
-import { zeros } from "../../svm/utils";
-
 /**
  *
  * @description
@@ -141,4 +139,12 @@ function average(data) {
     avg[i] /= N;
   }
   return avg;
+}
+
+function zeros(n) {
+  let arr = new Array(n);
+  for (let i = 0; i < n; i++) {
+    arr[i] = 0;
+  }
+  return arr;
 }
