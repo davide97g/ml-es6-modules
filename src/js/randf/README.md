@@ -9,13 +9,13 @@ Simple implementation of Random Forests for binary classification in javascript.
 #### ES6 syntax
 
 ```javascript
-import { RandomForest as RANDF } from "./path/randf";
+import { RandomForest } from "./path/randf";
 ```
 
 #### npm module
 
 ```javascript
-const RANDF require('./path/randf').RandomForest;
+const RandomForest = require("./path/randf").RandomForest;
 ```
 
 ### Variables
@@ -40,7 +40,7 @@ let options = {};
 ### Initialize
 
 ```javascript
-let randf = new RANDF();
+let randf = new RandomForest();
 ```
 
 ### Training
@@ -66,7 +66,6 @@ options = {
   numTries: 10, //is the number of random hypotheses generated at each node during training
   type: 0, //weak type parameter
   trainFun: f(x), // is a function with signature "function myWeakTrain(data, labels, ix, options)". Here, ix is a list of indeces into data of the instances that should be payed attention to. Everything not in the list should be ignored. This is done for efficiency. The function should return a model where you store variables. (i.e. model = {}; model.myvar = 5;) This will be passed to testFun.
-  testFun: f(x) // is a function with signature "funtion myWeakTest(inst, model)" where inst is 1D array specifying an example, and model will be the same model that you return in options.trainFun. 
-
+  testFun: f(x) // is a function with signature "funtion myWeakTest(inst, model)" where inst is 1D array specifying an example, and model will be the same model that you return in options.trainFun.
 };
 ```

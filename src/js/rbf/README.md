@@ -15,7 +15,7 @@ import { RBF } from "./path/rbf";
 #### npm module
 
 ```javascript
-const RBF require('./path/rbf');
+const RBF = require("./path/rbf");
 ```
 
 ### Variables

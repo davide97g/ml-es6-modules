@@ -13,7 +13,7 @@ import { Drawer } from "./path/drawer";
 #### npm module
 
 ```javascript
-const Drawer require('./path/drawer').drawer;
+const Drawer = require("./path/drawer").Drawer;
 ```
 
 ### Variables
@@ -36,8 +36,10 @@ let algorithm = new Algorithm(); //SVM || NN || RANDF || LOGREG || KNN || RBF
 let canvas = document.getElementById("myCanvas");
 let options = {
   ss: 20,
-  density: 3
-  margin: "soft"
+  density: 3,
+  margin: {
+    soft: true
+  }
 };
 ```
 
@@ -67,6 +69,8 @@ drawer.drawTestPoints(test, test_labels);
 options = {
   ss: 20, //scale factor
   density: 3, //grid drawing density
-  margin: "soft" // "soft" || "hard" Smooth or hard margin on drawing the colors
+  margin: {
+    soft: true // true|false Smooth or hard margin on drawing the colors
+  }
 };
 ```

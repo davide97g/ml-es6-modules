@@ -3,15 +3,40 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  background: whitesmoke;
+}
+
+#datasets {
+  width: 100%;
+  padding: 10px;
+}
+.coral {
+  background: lightcoral;
+  color: white;
+}
+.lightblue {
+  background: lightblue;
+  color: white;
+}
+
+header {
+  padding-top: 40px;
+  height: 20vh;
+  width: 100%;
+  vertical-align: middle;
+}
 .box {
   text-align: center;
   display: block;
-  padding: 2px;
+  padding: 20px;
   overflow: hidden;
   margin: auto;
   canvas {
     float: left;
   }
+  border-bottom: 2px solid lightcoral;
 }
 
 .drawer {
@@ -25,18 +50,31 @@
 .options {
   float: left;
 }
-
-.execute {
-  text-align: center;
-}
 .title {
   font-style: italic;
+  font-weight: 400;
 }
-.container {
-  margin-bottom: 20px;
+
+.algorithm,
+.draw {
+  float: left;
+}
+.algorithm {
+  background: lightcoral;
   width: 200px;
+}
+.draw {
+  background: lightgreen;
+  width: 200px;
+}
+
+.center {
   text-align: center;
-  background-color: rgba(70, 70, 70, 0.062);
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
 }
 
 /** UI classes end */
@@ -45,4 +83,14 @@
   position: fixed;
   bottom: 100px;
   right: 100px;
+}
+
+button {
+  @extend .coral;
+  width: 100px;
+  height: 30px;
+}
+
+.execute {
+  margin: 5px;
 }

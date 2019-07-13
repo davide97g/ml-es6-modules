@@ -3,6 +3,10 @@
 Simple implementation of Neural Networks for binary classification in javascript.
 Each net can have multiple layers, with different activation function e neurons.
 
+The core of the algorithm was made by Andrej Karpathy, you can find his code on [his github repository](https://github.com/karpathy/convnetjs).
+
+My work was just to create an interface to the convnet library.
+
 ## Usage
 
 ### Import
@@ -16,7 +20,7 @@ import { NN } from "./path/nn";
 #### npm module
 
 ```javascript
-const NN require('./path/nn');
+const NN = require("./path/nn");
 ```
 
 ### Variables
@@ -36,7 +40,15 @@ let data = [
 ];
 let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
 let options = {
-    
+  layer_defs: [
+    { type: "input", out_sx: 1, out_sy: 1, out_depth: 2 },
+    { type: "fc", num_neurons: 4, activation: "tanh" },
+    { type: "fc", num_neurons: 6, activation: "relu" },
+    { type: "softmax", num_classes: 2 }
+  ],
+  training: {
+    iters: 1000
+  }
 };
 ```
 
@@ -65,16 +77,16 @@ nn.predictClass(point); // value = 1 || value = -1
 ```javascript
 options = {
   layer_defs: [
-      { type: "input", out_sx: 1, out_sy: 1, out_depth: 2 }, //input layer
-      { type: "fc", num_neurons: 4, activation: "tanh" }, //hidden layer: type, neurons and activation function parameters. You can specify any number of these hidden layers
-      { type: "softmax", num_classes: 2 } // output layer
+    { type: "input", out_sx: 1, out_sy: 1, out_depth: 2 }, //input layer
+    { type: "fc", num_neurons: 4, activation: "tanh" }, //hidden layer: type, neurons and activation function parameters. You can specify any number of these hidden layers
+    { type: "softmax", num_classes: 2 } // output layer
   ],
   training: {
-      learning_rate: 0.01,
-      momentum: 0.1,
-      batch_size: 10,
-      l2_decay: 0.001
-      iters: 1000 //number of iterations for the training
+    learning_rate: 0.01,
+    momentum: 0.1,
+    batch_size: 10,
+    l2_decay: 0.001,
+    iters: 1000 //number of iterations for the training
   }
 };
 ```

@@ -4,12 +4,25 @@
 ![GitHub package.json version](https://img.shields.io/github/package-json/v/davide97g/ml-es6-modules.svg)
 
 # ml-es6-modules
+
 ## Machine learning as ES6 modules
 
 Browser-ready machine learning algorithms as ES6 modules.
 
+> ## `Warning`:
+>
+> These modules are created to be used in a browser with the ES6 syntax. If you want to just use the modules in a node environment you have to do the following steps:
+>
+> - convert `import` to `require` notation
+> - convert `export` to `module.exports` notation
+
 ## Demo
+
 A live demo is available [here](https://davide97g.github.io/ml-es6-modules/).
+
+# Documentation
+
+Documentation can be found [here](https://davide97g.github.io/ml-es6-modules/docs/index.html).
 
 ## ES6 modules
 
@@ -34,25 +47,26 @@ export default DefaultFunction(){
 ```
 
 > Script loading into html file could be done in different ways depending on your needs:
+>
 > - `async defer` attributes inside script tag : no need to wrap code with jquery document-ready statement
-> - `type="module"` if you want to load the script server-side (for es6 modules loading) 
+> - `type="module"` if you want to load the script server-side (for es6 modules loading)
 
 ## Algorithms
 
-- svm
+- Support Vector Machine with different kernels:
   - linear
   - polynomial
   - radial-basis-function (gaussian)
-- knn
-- rbf
-- random forest
-- logistic regression
-- neural net
+- KNN
+- Radial-basis function
+- Random Forests
+- Logistic Regression
+- Neural Net
   - multiple layers with costum definition
 
-Every algorithm is an es6 module. All the files needed for the algorithm to work are present in his directory.
+All algorithms are es6 module. The files needed for the algorithm to work are located in his directory, except for the utility functions.
 
-Every algorithm share the basic structure.
+All algorithms share the basic structure.
 
 Example
 
@@ -60,7 +74,7 @@ Example
 export const algorithm = function() {}; // expose this function
 algorithm.prototype = {
   // define the function
-  train: function(data, labels, options) {
+  train: function(data, labels) {
     //set up the environment
     //train
     //stored results
@@ -70,6 +84,12 @@ algorithm.prototype = {
   },
   predictClass: function(point) {
     //returns the class predicted
+  },
+  getOptions: function() {
+    //returns an object to be used by the "ui" class
+  },
+  setOptions: function(options) {
+    //set the options
   }
 };
 
@@ -80,23 +100,26 @@ algorithm.prototype = {
 
 A bundler for javascript code: you can use nodejs modules in the brower. All js files will be merged and transpiled into one bundle (index.bundle.js), generated into the `./dist` folder.
 
-To build the source code run in the command line, in the `package.json` directory:
+To build the source code run in the command line, inside the `package.json` directory:
 
 ```
 npm install
 ```
-Then, you have installed webpack and the project dependecies. Now you can build with:
+
+Now you have installed webpack and the project dependecies. Now you can build with:
+
 ```
 npm run build
 ```
 
-To be able to watch the files and automatically build, just run the command:
+To be able to watch the files and automatically build on changes, just run the command:
 
 ```
 npm run watch
 ```
 
 ## Support on Beerpay
+
 Hey dude! Help me out for a couple of :beers:!
 
-[![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/badge.svg?style=beer-square)](https://beerpay.io/davide97g/ml-es6-modules)  [![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/make-wish.svg?style=flat-square)](https://beerpay.io/davide97g/ml-es6-modules?focus=wish)
+[![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/badge.svg?style=beer-square)](https://beerpay.io/davide97g/ml-es6-modules) [![Beerpay](https://beerpay.io/davide97g/ml-es6-modules/make-wish.svg?style=flat-square)](https://beerpay.io/davide97g/ml-es6-modules?focus=wish)

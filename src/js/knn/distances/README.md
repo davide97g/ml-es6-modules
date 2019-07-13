@@ -21,7 +21,7 @@ import { Distances } from "./path/distances";
 #### npm module
 
 ```javascript
-const Distances require('./path/distances');
+const Distances = require("./path/distances");
 ```
 
 ### Variables

@@ -1,9 +1,11 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     
     <meta charset="utf-8">
-    <title>JSDoc: Global</title>
+    <title>JSDoc: input.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -49,176 +51,133 @@
             <div class="column is-9-desktop">
                 <div class="content" id="main-content-wrapper">
                     <header class="page-title">
-                        <p>Title</p>
-                        <h1>Global</h1>
+                        <p>Source</p>
+                        <h1>input.js</h1>
                     </header>
                     
                     
 
 
 
-
-<section>
-
-<header>
     
-        <h2></h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <div class='vertical-section'>
-            <h3 class="title"><span>Members</span></h3>
-            <div class="members">
-            
-                <div class="member">
-
-<h4 class="name" id="Distances">
-    
-        
-            <span class='tag'>constant</span>
-        
-    
-    <span class="code-name">
-        Distances
-    </span>
-</h4>
-
-
-
-
-<div class="description">
-    <p>Class used to handle distances functions</p>
-</div>
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-
-    
-
-    
-        <p class="tag-source">
-            <a href="knn_distances_distances.js.html" class="button">View Source</a>
-            <span>
-                <a href="knn_distances_distances.js.html">knn/distances/distances.js</a>, <a href="knn_distances_distances.js.html#line20">line 20</a>
-            </span>
-        </p>
-    
-</dl>
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>//new instancelet distances = new Distances();//define two pointslet point1 = [1,3];let point2 = [4,-2];//minkowski distance from two pointslet minkowski_distance = distances.minkowski(point1,point2);//chebyshev distance from two pointslet chebyshev_distance = distances.chebyshev(point1,point2);//mahalanobis distance from two pointslet mahalanobis_distance = distances.mahalanobis(point1,point2);//setting the grade for minkowskidistances.setMinkowskiDegree(2);</code></pre>
-
-
-</div>
-            
-            </div>
-        </div>
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** YOU DON'T NEED THIS FILE TO USE THE MACHINE LEARNING MODULES 
+ * @name input.js
+ * @description 
+ * A list of input transformation function, also called "boosting" functions.
+ * They receive an array and then return a boosted version based on the function they use.
+ * @copyright Davide Ghiotto
+*/
+
+import { copyArray } from "./utils.js";
+
+function fx2(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[0], 2));
+  return res;
+}
+function fy2(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[1], 2));
+  return res;
+}
+function fx3(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[0], 3));
+  return res;
+}
+function fy3(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[1], 3));
+  return res;
+}
+function fx2y2(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[0], 2) + Math.pow(v[1], 2));
+  return res;
+}
+function fx2_y2(v) {
+  let res = copyArray(v);
+  res.push(Math.pow(v[0], 2) - Math.pow(v[1], 2));
+  return res;
+}
+function fxy(v) {
+  let res = copyArray(v);
+  res.push(v[0] * v[1]);
+  return res;
+}
+function fsinx(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[0]));
+  return res;
+}
+function fsiny(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[1]));
+  return res;
+}
+function fcosx(v) {
+  let res = copyArray(v);
+  res.push(Math.cos(v[0]));
+  return res;
+}
+function fcosy(v) {
+  let res = copyArray(v);
+  res.push(Math.cos(v[1]));
+  return res;
+}
+function fsinxcosy(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[0]) + Math.cos(v[1]));
+  return res;
+}
+function fsinycosx(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[1]) + Math.cos(v[0]));
+  return res;
+}
+function fsinxcosydot(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[0]) * Math.cos(v[1]));
+  return res;
+}
+function fsinycosxdot(v) {
+  let res = copyArray(v);
+  res.push(Math.sin(v[1]) * Math.cos(v[0]));
+  return res;
+}
+
+export function boost(input_boosting, point) {
+  if (input_boosting.length > 0) {
+    let boosted = copyArray(point);
+    for (let i = 0; i &lt; input_boosting.length; i++) {
+      boosted = input_boosting[i](boosted);
+    }
+    return boosted;
+  } else return point;
+}
+
+export function getFunction(id) {
+  if (id === "x2") return fx2;
+  else if (id === "y2") return fy2;
+  else if (id === "x3") return fx3;
+  else if (id === "y3") return fy3;
+  else if (id === "x2y2") return fx2y2;
+  else if (id === "x2_y2") return fx2_y2;
+  else if (id === "xy") return fxy;
+  else if (id === "sinx") return fsinx;
+  else if (id === "siny") return fsiny;
+  else if (id === "cosx") return fcosx;
+  else if (id === "cosy") return fcosy;
+  else if (id === "sinxcosy") return fsinxcosy;
+  else if (id === "sinycosx") return fsinycosx;
+  else if (id === "sinxcosydot") return fsinxcosydot;
+  else if (id === "sinycosxdot") return fsinycosxdot;
+}
+</code></pre>
+        </article>
+    </section>
 
 
 

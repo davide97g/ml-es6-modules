@@ -1,6 +1,10 @@
-# svm
+# SVM
 
-Simple implementation of Nearest Neighbor algorithm for binary classification in javascript.
+Simple implementation of Support Vector Machine algorithm for binary classification in javascript.
+
+The core of the algorithm was made by Andrej Karpathy, you can find his code on [his github repository](https://github.com/karpathy/svmjs).
+
+I added something more to his work like polynomial kernel and the full SMO algorithm (J. Platt).
 
 ## Usage
 
@@ -15,7 +19,7 @@ import { SVM } from "./path/svm";
 #### npm module
 
 ```javascript
-const SVM require('./path/svm');
+const SVM = require("./path/svm");
 ```
 
 ### Variables
@@ -65,7 +69,13 @@ svm.predictClass(point); // value = 1 || value = -1
 
 ```javascript
 options = {
-  kernel: "linear", // "linear" | "poly" | "rbf" | "sigm"
+  kernel:{ // you just need to specify the one you want. The last kernel set to true will be used
+    linear: true|false,
+    poly: true|false,
+    rbf: true|false,
+    sigm: true|false
+  },
+  karpathy: true|false, // karpathy partial SMO | Full SMO (J.Platt)
   C: 1, // number > 0
   tol: 1e-4, // numerical tolerance
   alphatol: 0, // non-support vector tolerance

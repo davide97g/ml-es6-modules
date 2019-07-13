@@ -1,9 +1,10 @@
 import {linearKernel,makePolyKernel,makeRbfKernel,makeSigmoidKernel} from './kernels.js';
-import * as utils from './utils.js';
+import * as utils from '../utils.js';
 let svm_id=1;
 export const SVM = function() {
     this.svm_id = svm_id++;
 };
+
 SVM.prototype = {
 
     setOptions: function(options) {

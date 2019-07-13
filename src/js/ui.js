@@ -1,8 +1,10 @@
 /**
- * @name UI
+ * YOU DON'T NEED THIS FILE TO USE THE MACHINE LEARNING MODULES
+ * @name ui.js
  * @description
- * A User Interface function
+ * A User Interface function: automatically generates the GUI using the "getOptions" method of each algorithm
  * @param {document} document
+ * @copyright Davide Ghiotto
  */
 export const UI = function(document, dataset_generator) {
   this.document = document;

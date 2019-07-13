@@ -9,13 +9,13 @@ Simple implementation of Logistic Regression for binary classification in javasc
 #### ES6 syntax
 
 ```javascript
-import { LogisticRegression as LOGREG } from "./path/logreg";
+import { LogisticRegression } from "./path/logreg";
 ```
 
 #### npm module
 
 ```javascript
-const LOGREG =  require('./path/nn').LogisticRegression;
+const LogisticRegression = require("./path/nn").LogisticRegression;
 ```
 
 ### Variables
@@ -34,15 +34,13 @@ let data = [
   [-5, -2]
 ];
 let labels = [1, 1, 1, 1, 1, -1, -1, -1, -1, -1];
-let options = {
-    
-};
+let options = {};
 ```
 
 ### Initialize
 
 ```javascript
-let logreg = new LOGREG();
+let logreg = new LogisticRegression();
 ```
 
 ### Training

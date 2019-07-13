@@ -1,3 +1,12 @@
+/** YOU DON'T NEED THIS FILE TO USE THE MACHINE LEARNING MODULES
+ * @name manager.js
+ * @description
+ * Manager of the data flow between multiple algorithms.
+ * This function was built with the "observer" pattern in mind:
+ * all the drawers that subscribe to the manager receive themselves a manager instance.
+ * Manager will notify all the subscribers (drawers) whenever a drawer call for an update.
+ * @copyright Davide Ghiotto
+ */
 import { copyArray } from "./utils.js";
 import { boost } from "./input.js";
 export const Manager = function() {

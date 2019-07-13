@@ -1,3 +1,11 @@
+/** YOU DON'T NEED THIS FILE TO USE THE MACHINE LEARNING MODULES 
+ * @name input.js
+ * @description 
+ * A list of input transformation function, also called "boosting" functions.
+ * They receive an array and then return a boosted version based on the function they use.
+ * @copyright Davide Ghiotto
+*/
+
 import { copyArray } from "./utils.js";
 
 function fx2(v) {

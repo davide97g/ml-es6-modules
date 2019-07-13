@@ -1,3 +1,10 @@
+/**
+ * YOU NEED THIS FILE TO USE THE MACHINE LEARNING MODULES
+ * @name utils.js
+ * @description
+ * a list of utility functions shared between modules.
+ * @copyright Davide Ghiotto
+ */
 export function randf(a, b) {
   return Math.random() * (b - a) + a;
 }
